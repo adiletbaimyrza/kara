@@ -8,8 +8,10 @@ scipy>=1.11
 matplotlib>=3.8
 seaborn>=0.13
 
-# Transformers + LLM (Helios GPU)
-torch>=2.2
+# Transformers + LLM
+# NOTE: torch is installed separately on Helios via slurm/setup_venv.sh from
+# the cu126 wheel index (PyPI ships CPU-only torch for linux_aarch64).
+# On a local Mac or CUDA x86_64, plain `pip install torch` works.
 transformers>=4.44
 datasets>=2.18
 accelerate>=0.30

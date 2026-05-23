@@ -1,25 +1,58 @@
-#!/bin/bash
-#SBATCH --job-name=kara-tfm
-#SBATCH --account=plgnlp-gpu          # ← replace with your Athena grant id (e.g. plg<grantname>-gpu)
-#SBATCH --partition=plgrid-gpu-a100
-#SBATCH --gres=gpu:1
-#SBATCH --cpus-per-task=8
-#SBATCH --mem=40G
-#SBATCH --time=01:00:00
-#SBATCH --output=slurm/logs/tfm-%j.out
-#SBATCH --error=slurm/logs/tfm-%j.err
+#!/bin/bash -l
+# Cyfronet Helios transformer fine-tuning job (single GH200 GPU, aarch64).
+# Fine-tunes mBERT + XLM-R on the Kyrgyz hate-speech dataset.
+# Expected wallclock: ~20-30 min total (~10 min per model).
+#
+# Usage (from $SCRATCH/kara):
+#   sbatch slurm/transformers.sbatch
 
-# Fine-tune mBERT + XLM-R on the Kyrgyz hate-speech dataset.
-# Single A100 80GB on Cyfronet Athena. Expected wallclock ~20-30 min total
-# (~10 min per model × 2 models + setup).
+#SBATCH --job-name=kara-tfm
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --cpus-per-task=4
+#SBATCH --mem=16GB
+#SBATCH --gres=gpu:1
+#SBATCH --time=01:00:00
+#SBATCH --partition=plgrid-gpu-gh200
+#SBATCH --account=plgnlpkara-gpu-gh200       # ← replace with your Helios grant id
+#SBATCH --output=logs/%x-%j.log
+#SBATCH --error=logs/%x-%j.err
+
+ml ML-bundle/25.10
 
 set -euo pipefail
-mkdir -p slurm/logs
 
-module purge
-module load Python/3.11.5 CUDA/12.2
+SCRATCH_ROOT=${SCRATCH}/kara
+REPO_DIR=${SCRATCH_ROOT}
+VENV_DIR=${SCRATCH_ROOT}/venv
+HF_HOME=${SCRATCH}/hf_home
 
-source .venv/bin/activate
-cd "$SLURM_SUBMIT_DIR"
+mkdir -p logs "${HF_HOME}"
+
+cd "${REPO_DIR}"
+source "${VENV_DIR}/bin/activate"
+
+export HF_HOME
+export TRANSFORMERS_CACHE="${HF_HOME}"
+export HF_HUB_CACHE="${HF_HOME}"
+
+ENV_FILE="${SCRATCH_ROOT}/.env"
+if [ -f "${ENV_FILE}" ]; then
+    set -a; source "${ENV_FILE}"; set +a
+fi
+if [ -n "${HF_TOKEN:-}" ]; then
+    export HUGGINGFACE_HUB_TOKEN="${HF_TOKEN}"
+fi
+
+echo "=========================================="
+echo "Kara transformer job"
+echo "=========================================="
+echo "Repo:      ${REPO_DIR}"
+echo "GPU:       $(nvidia-smi --query-gpu=name --format=csv,noheader || echo unknown)"
+echo "Start:     $(date '+%Y-%m-%d %H:%M:%S')"
+echo "=========================================="
 
 python -m src.experiments.exp_transformer --model both
+
+echo ""
+echo "Done: $(date '+%Y-%m-%d %H:%M:%S')"

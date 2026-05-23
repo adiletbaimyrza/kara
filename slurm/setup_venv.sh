@@ -1,0 +1,63 @@
+#!/bin/bash -l
+# One-time venv setup on a Helios compute node (aarch64/GH200).
+# Must run on a compute node — login node has no PyPI access and is x86_64.
+#
+# Usage (from $SCRATCH/kara):
+#   sbatch slurm/setup_venv.sh
+
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --cpus-per-task=4
+#SBATCH --mem=16GB
+#SBATCH --time=00:30:00
+#SBATCH --gres=gpu:0
+#SBATCH --partition=plgrid-gpu-gh200
+#SBATCH --account=plgnlpkara-gpu-gh200       # ← replace with your Helios grant id
+#SBATCH --output=logs/%x-%j.log
+#SBATCH --error=logs/%x-%j.err
+
+ml ML-bundle/25.10
+
+set -euo pipefail
+
+# Helios sets PIP_EXTRA_INDEX_URL to an internal mirror with a limited package set.
+# Unset it so pip uses the real PyPI.
+unset PIP_EXTRA_INDEX_URL
+
+SCRATCH_ROOT=${SCRATCH}/kara
+REPO_DIR=${SCRATCH_ROOT}
+VENV_DIR=${SCRATCH_ROOT}/venv
+
+mkdir -p logs
+
+echo "Setting up Python venv at ${VENV_DIR}..."
+
+if [ ! -d "${VENV_DIR}" ]; then
+    python3 -m venv --system-site-packages "${VENV_DIR}"
+    echo "Venv created."
+fi
+
+source "${VENV_DIR}/bin/activate"
+
+VENV_MARKER="${VENV_DIR}/.kara_deps_installed"
+if [ ! -f "${VENV_MARKER}" ]; then
+    echo "Installing dependencies..."
+    pip install --upgrade pip -q
+
+    # Install CUDA-aware torch first, from PyTorch's own wheel index.
+    # Default PyPI ships CPU-only torch for linux_aarch64; the cu126 index
+    # has GPU-enabled aarch64 builds for GH200.
+    echo "Installing CUDA-aware torch (aarch64 + cu126)..."
+    pip install torch --index-url https://download.pytorch.org/whl/cu126 -q
+
+    # Other deps come from PyPI. Pip will see torch is already installed.
+    echo "Installing remaining dependencies..."
+    pip install -r "${REPO_DIR}/requirements.txt" -q
+
+    touch "${VENV_MARKER}"
+    echo "Dependencies installed."
+else
+    echo "Dependencies already installed."
+fi
+
+echo "Venv ready."
