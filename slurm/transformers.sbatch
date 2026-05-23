@@ -14,7 +14,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --time=01:00:00
 #SBATCH --partition=plgrid-gpu-gh200
-#SBATCH --account=plgnlpkara-gpu-gh200       # ← replace with your Helios grant id
+#SBATCH --account=plgunhype-gpu-gh200       # ← replace with your Helios grant id
 #SBATCH --output=logs/%x-%j.log
 #SBATCH --error=logs/%x-%j.err
 
