@@ -1,0 +1,4 @@
+=== exp1_tfidf_baseline ===
+started at: 2026-05-23 22:27:28
+finished in 2.2s
+macro_f1 = 0.5096

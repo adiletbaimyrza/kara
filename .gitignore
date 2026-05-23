@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*~
+
+# SLURM logs (regenerated per job)
+slurm/logs/
+
+# HuggingFace cache (don't commit gigabytes of model weights)
+.cache/
+
+# Local-only secrets / config (none right now, but reserve)
+.env
+.envrc
+
+# Notebook generated outputs (we re-execute)
+# Comment this out if you want to commit notebook outputs
+# notebooks/*.ipynb_checkpoints/

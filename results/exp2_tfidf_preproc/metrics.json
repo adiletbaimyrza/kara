@@ -1,0 +1,31 @@
+{
+  "name": "exp2_tfidf_preproc",
+  "family": "classical",
+  "description": "TF-IDF word 1-2grams + LogReg, full preprocessing",
+  "n_test": 216,
+  "accuracy": 0.5416666666666666,
+  "macro_f1": 0.524414462111912,
+  "macro_precision": 0.5243176921813562,
+  "macro_recall": 0.5246276067527309,
+  "weighted_f1": 0.5422912312559244,
+  "per_class": {
+    "non_hate": {
+      "precision": 0.6344086021505376,
+      "recall": 0.6210526315789474,
+      "f1": 0.6276595744680851,
+      "support": 95
+    },
+    "offensive": {
+      "precision": 0.4857142857142857,
+      "recall": 0.5,
+      "f1": 0.4927536231884058,
+      "support": 68
+    },
+    "hate": {
+      "precision": 0.4528301886792453,
+      "recall": 0.4528301886792453,
+      "f1": 0.4528301886792453,
+      "support": 53
+    }
+  }
+}
