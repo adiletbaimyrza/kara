@@ -1,7 +1,7 @@
-# Hate Speech Detection in Kyrgyz: A Dataset, Benchmark, and Annotation Schema for a Low-Resource Turkic Language
+# Hate Speech Detection in Kyrgyz: A Dataset, Benchmark, and Annotation Schema
 
-**Author:** [Your name]
-**Course:** NLP (Master's), [University name]
+**Author:** Adilet Baimyrza Uulu
+**Course:** Natural Language Processing (Master's), Jagiellonian University
 **Repository:** https://github.com/adiletbaimyrza/kyrgyz-hsd
 
 ---
@@ -9,7 +9,7 @@
 ## Abstract
 
 Kyrgyz is a low-resource Turkic language with no publicly available
-hate-speech detection dataset. We construct **Kara**, a 1,079-comment 3-class
+hate-speech detection dataset. We construct a 1,079-comment 3-class
 annotated dataset built from Kyrgyz-language YouTube comments using a
 Davidson-style biased+random candidate-sampling pipeline. We benchmark eight
 systems spanning classical machine learning, fine-tuned multilingual
@@ -47,7 +47,7 @@ where hate-speech detection is operationally relevant.
 
 This paper makes four contributions:
 
-1. **Kara: the first publicly-described Kyrgyz hate-speech dataset.** We
+1. **The first publicly-described Kyrgyz hate-speech dataset.** We
    annotate 1,079 comments from 13 Kyrgyz-language YouTube videos using a
    three-class schema (`hate` / `offensive` / `non_hate`) based on Davidson
    (2017) with explicit extensions and limitations documented.
@@ -849,7 +849,7 @@ length alone.](../figures/text_length_dist.png)
 
 ## 9. Conclusion
 
-We introduce **Kara**, the first publicly-described Kyrgyz hate-speech
+We introduce the first publicly-described Kyrgyz hate-speech
 detection dataset (1,079 annotated comments across `hate` / `offensive` /
 `non_hate`), and an 8-system benchmark spanning classical ML, fine-tuned
 multilingual transformers, and zero-/few-shot LLM prompting.
@@ -1062,7 +1062,7 @@ academic search.
 
 ### Code and data
 
-- **Kara repository:** https://github.com/adiletbaimyrza/kyrgyz-hsd
+- **Project repository:** https://github.com/adiletbaimyrza/kyrgyz-hsd
   — source code, annotated dataset (1,079 labelled comments), data
   splits (70/10/20 stratified), all 8 trained-model outputs
   (`results/exp*/`), regenerable figures (`figures/`), regenerable

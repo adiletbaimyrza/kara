@@ -1,8 +1,8 @@
 #!/bin/bash -l
-# One-shot setup and job submission for Kara on Helios.
+# One-shot setup and job submission for kyrgyz-hsd on Helios.
 # Safe to rerun — all steps are idempotent.
 #
-# Usage (from $SCRATCH/kara):
+# Usage (from $SCRATCH/kyrgyz-hsd):
 #   bash setup_and_submit.sh                # runs: setup venv (if needed) → llm + transformer jobs
 #   bash setup_and_submit.sh llm            # only LLM job
 #   bash setup_and_submit.sh transformer    # only transformer job
@@ -13,13 +13,13 @@ set -euo pipefail
 
 WHICH="${1:-all}"
 
-SCRATCH_ROOT="${SCRATCH}/kara"
+SCRATCH_ROOT="${SCRATCH}/kyrgyz-hsd"
 REPO_DIR="${SCRATCH_ROOT}"
 VENV_DIR="${SCRATCH_ROOT}/venv"
 HF_HOME="${SCRATCH}/hf_home"
 
 echo "=========================================="
-echo "Kara setup-and-submit"
+echo "kyrgyz-hsd setup-and-submit"
 echo "=========================================="
 echo "Mode:             ${WHICH}"
 echo "Scratch root:     ${SCRATCH_ROOT}"
@@ -56,7 +56,7 @@ echo ""
 
 # ── [3/4] Venv (submit setup job if not ready) ────────────────────────────────
 echo "[3/4] Checking Python venv..."
-VENV_MARKER="${VENV_DIR}/.kara_deps_installed"
+VENV_MARKER="${VENV_DIR}/.khsd_deps_installed"
 SETUP_DEP=""
 if [ ! -f "${VENV_MARKER}" ]; then
     echo "  Venv not ready — submitting setup job on a GH200 compute node..."
@@ -149,5 +149,5 @@ squeue -u $USER
 echo "=========================================="
 echo ""
 echo "Watch logs with:"
-echo "  tail -f logs/kara-llm-*.log"
-echo "  tail -f logs/kara-tfm-*.log"
+echo "  tail -f logs/khsd-llm-*.log"
+echo "  tail -f logs/khsd-tfm-*.log"

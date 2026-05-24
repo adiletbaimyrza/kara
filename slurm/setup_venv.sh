@@ -2,7 +2,7 @@
 # One-time venv setup on a Helios compute node (aarch64/GH200).
 # Must run on a compute node — login node has no PyPI access and is x86_64.
 #
-# Usage (from $SCRATCH/kara):
+# Usage (from $SCRATCH/kyrgyz-hsd):
 #   sbatch slurm/setup_venv.sh
 
 #SBATCH --nodes=1
@@ -24,7 +24,7 @@ set -euo pipefail
 # Unset it so pip uses the real PyPI.
 unset PIP_EXTRA_INDEX_URL
 
-SCRATCH_ROOT=${SCRATCH}/kara
+SCRATCH_ROOT=${SCRATCH}/kyrgyz-hsd
 REPO_DIR=${SCRATCH_ROOT}
 VENV_DIR=${SCRATCH_ROOT}/venv
 
@@ -39,7 +39,7 @@ fi
 
 source "${VENV_DIR}/bin/activate"
 
-VENV_MARKER="${VENV_DIR}/.kara_deps_installed"
+VENV_MARKER="${VENV_DIR}/.khsd_deps_installed"
 if [ ! -f "${VENV_MARKER}" ]; then
     echo "Installing dependencies..."
     pip install --upgrade pip -q

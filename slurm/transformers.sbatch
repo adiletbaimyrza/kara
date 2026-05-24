@@ -3,10 +3,10 @@
 # Fine-tunes mBERT + XLM-R on the Kyrgyz hate-speech dataset.
 # Expected wallclock: ~20-30 min total (~10 min per model).
 #
-# Usage (from $SCRATCH/kara):
+# Usage (from $SCRATCH/kyrgyz-hsd):
 #   sbatch slurm/transformers.sbatch
 
-#SBATCH --job-name=kara-tfm
+#SBATCH --job-name=khsd-tfm
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=4
@@ -22,7 +22,7 @@ ml ML-bundle/25.10
 
 set -euo pipefail
 
-SCRATCH_ROOT=${SCRATCH}/kara
+SCRATCH_ROOT=${SCRATCH}/kyrgyz-hsd
 REPO_DIR=${SCRATCH_ROOT}
 VENV_DIR=${SCRATCH_ROOT}/venv
 HF_HOME=${SCRATCH}/hf_home
@@ -45,7 +45,7 @@ if [ -n "${HF_TOKEN:-}" ]; then
 fi
 
 echo "=========================================="
-echo "Kara transformer job"
+echo "Kyrgyz-HSD transformer job"
 echo "=========================================="
 echo "Repo:      ${REPO_DIR}"
 echo "GPU:       $(nvidia-smi --query-gpu=name --format=csv,noheader || echo unknown)"

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Reset Kara project state for a clean re-run.
+# Reset Kyrgyz-HSD project state for a clean re-run.
 # Safe on both Mac (local dev) and Helios (cluster).
 #
 # Cleanup levels (cumulative — each includes the previous):
@@ -20,7 +20,7 @@
 #   - .env (HF_TOKEN, secrets)
 #   - source code, SLURM scripts, paper drafts, DISCOVERIES.md
 #
-# On Helios: cancels only your kara-* SLURM jobs (leaves cpt_experiments etc alone).
+# On Helios: cancels only your khsd-* SLURM jobs (leaves cpt_experiments etc alone).
 
 set -euo pipefail
 
@@ -75,7 +75,7 @@ done < <(find "${REPO_DIR}" -type d \( -name __pycache__ -o -name '.ipynb_checkp
 # --deep: also remove venv marker (forces full pip reinstall on next setup_venv)
 if [ "${DEEP}" -eq 1 ]; then
     if [ "${IS_HELIOS}" -eq 1 ]; then
-        TARGETS+=("${SCRATCH}/kara/venv/.kara_deps_installed")
+        TARGETS+=("${SCRATCH}/kyrgyz-hsd/venv/.khsd_deps_installed")
     fi
 fi
 
@@ -88,7 +88,7 @@ fi
 if [ "${NUKE}" -eq 1 ]; then
     if [ "${IS_HELIOS}" -eq 1 ]; then
         TARGETS+=(
-            "${SCRATCH}/kara/venv"
+            "${SCRATCH}/kyrgyz-hsd/venv"
             "${SCRATCH}/hf_home"
         )
     else
@@ -100,7 +100,7 @@ fi
 
 # ── Show the plan ─────────────────────────────────────────────────────────────
 echo "=========================================="
-echo "Kara clean — plan"
+echo "Project clean — plan"
 echo "=========================================="
 echo "Where:   ${REPO_DIR}"
 echo "Helios:  $( [ "${IS_HELIOS}" -eq 1 ] && echo yes || echo no )"
@@ -137,13 +137,13 @@ echo "  .env                                       (HF_TOKEN, secrets)"
 echo "  source code, slurm/*.sh, paper/, DISCOVERIES.md"
 if [ "${IS_HELIOS}" -eq 1 ]; then
     if [ "${NUKE}" -eq 0 ]; then
-        echo "  ${SCRATCH}/kara/venv                       (use --nuke to also remove)"
+        echo "  ${SCRATCH}/kyrgyz-hsd/venv                       (use --nuke to also remove)"
         echo "  ${SCRATCH}/hf_home                         (use --nuke to also remove)"
     fi
 fi
 echo ""
 if [ "${IS_HELIOS}" -eq 1 ]; then
-    echo "Will also cancel queued/running kara-* SLURM jobs (leaves other jobs alone)."
+    echo "Will also cancel queued/running khsd-* SLURM jobs (leaves other jobs alone)."
     echo ""
 fi
 echo "=========================================="
@@ -164,18 +164,18 @@ if [ "${ASSUME_YES}" -ne 1 ]; then
     esac
 fi
 
-# ── Cancel Kara SLURM jobs first (Helios only) ────────────────────────────────
+# ── Cancel project SLURM jobs first (Helios only) ────────────────────────────────
 if [ "${IS_HELIOS}" -eq 1 ]; then
     echo ""
-    echo "Cancelling kara-* SLURM jobs..."
-    # Only cancel jobs whose name starts with "kara-" or matches "setup_venv"
+    echo "Cancelling khsd-* SLURM jobs..."
+    # Only cancel jobs whose name starts with "khsd-" or matches "setup_venv"
     KARA_JOBS=$(squeue -u "$(whoami)" -h -o '%i %j' 2>/dev/null \
-                | awk '$2 ~ /^(kara-|setup_venv)/ {print $1}')
+                | awk '$2 ~ /^(khsd-|setup_venv)/ {print $1}')
     if [ -n "${KARA_JOBS}" ]; then
         echo "${KARA_JOBS}" | xargs scancel
         echo "  Cancelled: $(echo "${KARA_JOBS}" | wc -w | tr -d ' ') jobs"
     else
-        echo "  No kara jobs in queue."
+        echo "  No project jobs in queue."
     fi
 fi
 

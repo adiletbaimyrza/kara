@@ -882,7 +882,7 @@ This matches the IAA pattern in the entry above. Both as annotator and as classi
 
 ## 2026-05-24 — results — mBERT > XLM-R on Kyrgyz YouTube (reverses common English NLP wisdom)
 
-The standard ordering on multilingual benchmarks is XLM-R > mBERT, often by 5–10 F1 points. On Kara, the ordering is **reversed**: mBERT macro-F1 = 0.557, XLM-R macro-F1 = 0.431 (13 F1 point gap *favouring mBERT*). Per-class breakdown shows XLM-R particularly collapses on `hate` (F1 = 0.188) while mBERT manages 0.400.
+The standard ordering on multilingual benchmarks is XLM-R > mBERT, often by 5–10 F1 points. On our dataset, the ordering is **reversed**: mBERT macro-F1 = 0.557, XLM-R macro-F1 = 0.431 (13 F1 point gap *favouring mBERT*). Per-class breakdown shows XLM-R particularly collapses on `hate` (F1 = 0.188) while mBERT manages 0.400.
 
 **Hypothesis:** XLM-R's CommonCrawl-heavy Kyrgyz pretraining over-represents formal-Kyrgyz text using the full Cyrillic alphabet (Ң, Ө, Ү), whereas YouTube comments overwhelmingly use the Russian-keyboard substitutes (89.8%). mBERT's narrower but Wikipedia-anchored Kyrgyz pretraining happens to be closer to colloquial vocabulary after standard lowercasing. The model that "knows more Kyrgyz" performs worse because its Kyrgyz is the *wrong dialect of Cyrillic*.
 

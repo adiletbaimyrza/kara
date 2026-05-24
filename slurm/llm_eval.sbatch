@@ -4,10 +4,10 @@
 # Aya-Expanse-8B weights fit comfortably on a GH200 96GB in bf16.
 # Expected wallclock: ~40-60 min total.
 #
-# Usage (from $SCRATCH/kara):
+# Usage (from $SCRATCH/kyrgyz-hsd):
 #   sbatch slurm/llm_eval.sbatch
 
-#SBATCH --job-name=kara-llm
+#SBATCH --job-name=khsd-llm
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=8
@@ -23,7 +23,7 @@ ml ML-bundle/25.10
 
 set -euo pipefail
 
-SCRATCH_ROOT=${SCRATCH}/kara
+SCRATCH_ROOT=${SCRATCH}/kyrgyz-hsd
 REPO_DIR=${SCRATCH_ROOT}
 VENV_DIR=${SCRATCH_ROOT}/venv
 HF_HOME=${SCRATCH}/hf_home
@@ -43,7 +43,7 @@ export HF_HUB_CACHE="${HF_HOME}"
 #   1. Sign in at https://huggingface.co and accept license on the model page:
 #      https://huggingface.co/CohereForAI/aya-expanse-8b
 #   2. Create a token at https://huggingface.co/settings/tokens
-#   3. Add it to $SCRATCH/kara/.env as: HF_TOKEN=hf_xxxxxx
+#   3. Add it to $SCRATCH/kyrgyz-hsd/.env as: HF_TOKEN=hf_xxxxxx
 ENV_FILE="${SCRATCH_ROOT}/.env"
 if [ -f "${ENV_FILE}" ]; then
     set -a; source "${ENV_FILE}"; set +a
@@ -59,7 +59,7 @@ fi
 export HUGGINGFACE_HUB_TOKEN="${HF_TOKEN}"
 
 echo "=========================================="
-echo "Kara LLM job"
+echo "Kyrgyz-HSD LLM job"
 echo "=========================================="
 echo "Repo:      ${REPO_DIR}"
 echo "Venv:      ${VENV_DIR}"
