@@ -69,15 +69,22 @@ echo "Start:     $(date '+%Y-%m-%d %H:%M:%S')"
 echo "=========================================="
 
 echo ""
-echo "=== [1/3] LLM second-annotator ==="
+echo "=== [1/4] LLM second-annotator ==="
 python -m src.annotate_llm
 
+# After the annotator finishes, rebuild the dataset — this picks up the new
+# LLM labels and computes Cohen's kappa (human vs LLM) automatically.
+# Also ensures train/val/test splits exist before the eval steps below.
 echo ""
-echo "=== [2/3] Zero-shot eval ==="
+echo "=== [2/4] Build dataset + compute IAA (Cohen's kappa) ==="
+python -m src.build_dataset
+
+echo ""
+echo "=== [3/4] Zero-shot eval ==="
 python -m src.experiments.exp_llm_zeroshot
 
 echo ""
-echo "=== [3/3] Few-shot eval ==="
+echo "=== [4/4] Few-shot eval ==="
 python -m src.experiments.exp_llm_fewshot
 
 echo ""

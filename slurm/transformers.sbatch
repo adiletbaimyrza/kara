@@ -52,6 +52,14 @@ echo "GPU:       $(nvidia-smi --query-gpu=name --format=csv,noheader || echo unk
 echo "Start:     $(date '+%Y-%m-%d %H:%M:%S')"
 echo "=========================================="
 
+# Ensure train/val/test splits exist (idempotent — quick CPU step).
+# Required because clean.sh removes data/splits/ between runs.
+echo ""
+echo "=== [0/1] Ensuring splits exist ==="
+python -m src.build_dataset
+
+echo ""
+echo "=== [1/1] Transformer fine-tuning (mBERT + XLM-R) ==="
 python -m src.experiments.exp_transformer --model both
 
 echo ""
