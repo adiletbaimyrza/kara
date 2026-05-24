@@ -70,16 +70,30 @@ fi
 echo ""
 
 # ── [4/4] Submit experiment jobs ──────────────────────────────────────────────
+# In "all" mode, jobs run SEQUENTIALLY: LLM → transformer.
+# Reason: the LLM annotator produces annotations_llm.csv, which build_dataset
+# (called inside each job) uses to compute Cohen's kappa. If the transformer
+# job runs in parallel, its build_dataset only sees partial LLM labels and
+# IAA becomes meaningless.
 echo "[4/4] Submitting experiment jobs..."
 
+LLM_DEP=""
 if [ "${WHICH}" = "llm" ] || [ "${WHICH}" = "all" ]; then
     LLM_JOB_ID=$(sbatch --parsable ${SETUP_DEP} slurm/llm_eval.sbatch)
     echo "  LLM job:         ${LLM_JOB_ID}"
+    LLM_DEP="--dependency=afterok:${LLM_JOB_ID}"
 fi
 
 if [ "${WHICH}" = "transformer" ] || [ "${WHICH}" = "all" ]; then
-    TFM_JOB_ID=$(sbatch --parsable ${SETUP_DEP} slurm/transformers.sbatch)
-    echo "  Transformer job: ${TFM_JOB_ID}"
+    # If we just submitted the LLM job, chain transformer after it via
+    # afterok. Otherwise (transformer-only mode) just use setup dep.
+    if [ -n "${LLM_DEP}" ]; then
+        TFM_JOB_ID=$(sbatch --parsable ${LLM_DEP} slurm/transformers.sbatch)
+        echo "  Transformer job: ${TFM_JOB_ID}  (waits for LLM job ${LLM_JOB_ID})"
+    else
+        TFM_JOB_ID=$(sbatch --parsable ${SETUP_DEP} slurm/transformers.sbatch)
+        echo "  Transformer job: ${TFM_JOB_ID}"
+    fi
 fi
 
 echo ""

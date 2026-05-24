@@ -102,6 +102,13 @@ class TransformerExperiment(Experiment):
         ckpt_dir = self.outdir / "checkpoints"
         ckpt_dir.mkdir(parents=True, exist_ok=True)
 
+        # Use bf16 on CUDA when available — same memory as fp16 but with
+        # fp32's exponent range, avoiding XLM-R LayerNorm overflow (a known
+        # issue where XLM-R collapses to predicting one class under fp16).
+        # mBERT survives fp16 but bf16 is also fine for it.
+        use_bf16 = torch.cuda.is_available() and torch.cuda.is_bf16_supported()
+        use_fp16 = torch.cuda.is_available() and not use_bf16
+
         args = TrainingArguments(
             output_dir=str(ckpt_dir),
             num_train_epochs=self.epochs,
@@ -119,7 +126,8 @@ class TransformerExperiment(Experiment):
             logging_steps=20,
             report_to=[],
             seed=RNG_SEED,
-            fp16=torch.cuda.is_available(),
+            bf16=use_bf16,
+            fp16=use_fp16,
         )
 
         # `tokenizer=` was renamed to `processing_class=` in transformers >=4.46
