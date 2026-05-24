@@ -1,0 +1,194 @@
+ GCCcore/14.3.0 loaded.
+ zlib/1.3.1 loaded.
+ binutils/2.44 loaded.
+ GCC/14.3.0 loaded.
+ numactl/2.0.19 loaded.
+ XZ/5.8.1 loaded.
+ libxml2/2.14.3 loaded.
+ libpciaccess/0.18.1 loaded.
+ hwloc/2.12.1 loaded.
+ OpenSSL/3 loaded.
+ libevent/2.1.12 loaded.
+ json-c/0.17 loaded.
+ libcxi/1.0.2-SHS-13.1.0 loaded.
+ libfabric/2.3.1-SHS-13.1.0 loaded.
+ PMIx/5.0.8 loaded.
+ PRRTE/3.0.11 loaded.
+ CUDA/12.9.1 loaded.
+ OpenMPI/5.0.8 loaded.
+ OpenBLAS/0.3.30 loaded.
+ NVPL/25.5 loaded.
+ FlexiBLAS/3.4.5 loaded.
+ FFTW/3.3.10 loaded.
+ FFTW.MPI/3.3.10 loaded.
+ ScaLAPACK/2.2.2-fb loaded.
+ foss/2025b loaded.
+ ncurses/6.5 loaded.
+ GMP/6.3.0 loaded.
+ bzip2/1.0.8 loaded.
+ libreadline/8.2 loaded.
+ libtommath/1.3.0 loaded.
+ Tcl/9.0.1 loaded.
+ SQLite/3.50.1 loaded.
+ libffi/3.5.1 loaded.
+ Python/3.13.5 loaded.
+ Z3/4.15.1 loaded.
+ Clang/21.1.2-CUDA-12.9.1 loaded.
+ magma/2.9.0-CUDA-12.9.1 loaded.
+ cuDNN/9.10.1.4-CUDA-12.9.1 loaded.
+ NCCL/2.27.7-CUDA-12.9.1 loaded.
+ aws-ofi-nccl/1.16.3-CUDA-12.9.1 loaded.
+ NASM/2.16.03 loaded.
+ libjpeg-turbo/3.1.1 loaded.
+ zlib/1.3.1 unloaded.
+ zlib/1.2.13 loaded.
+ libpng/1.6.50 loaded.
+ zlib/1.2.13 unloaded.
+ zlib/1.3.1 loaded.
+ x264/20250831 loaded.
+ LAME/3.100 loaded.
+ x265/4.1 loaded.
+ expat/2.7.1 loaded.
+ Brotli/1.1.0 loaded.
+ freetype/2.13.3 loaded.
+ util-linux/2.41 loaded.
+ fontconfig/2.17.0 loaded.
+ xorg-macros/1.20.2 loaded.
+ X11/20250608 loaded.
+ FriBidi/1.0.16 loaded.
+ SDL2/2.32.10 loaded.
+ FFmpeg/7.1.2 loaded.
+ libogg/1.3.6 loaded.
+ FLAC/1.5.0 loaded.
+ libvorbis/1.3.7 loaded.
+ libopus/1.5.2 loaded.
+ libsndfile/1.2.2 loaded.
+ cuSPARSELt/0.8.1.1-CUDA-12.9.1 loaded.
+ libaec/1.1.4 loaded.
+ Perl/5.40.2 loaded.
+ HDF5/1.14.6 loaded.
+---------------------------WARNING-----------------------
+Due to performance issues OMP_NUM_THREADS is set to 1
+If you see performance drop, carefully test larger values
+--------------------------------------------------------- 
+ ML-bundle/25.10 loaded.
+Map:   0%|          | 0/755 [00:00<?, ? examples/s]Map: 100%|██████████| 755/755 [00:00<00:00, 18115.92 examples/s]
+Map:   0%|          | 0/108 [00:00<?, ? examples/s]Map: 100%|██████████| 108/108 [00:00<00:00, 15509.46 examples/s]
+Map:   0%|          | 0/216 [00:00<?, ? examples/s]Map: 100%|██████████| 216/216 [00:00<00:00, 21322.95 examples/s]
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 3033.83it/s]
+[transformers] [1mBertForSequenceClassification LOAD REPORT[0m from: bert-base-multilingual-cased
+Key                                        | Status     | 
+-------------------------------------------+------------+-
+cls.predictions.transform.LayerNorm.bias   | UNEXPECTED | 
+cls.seq_relationship.bias                  | UNEXPECTED | 
+cls.predictions.transform.LayerNorm.weight | UNEXPECTED | 
+cls.predictions.transform.dense.weight     | UNEXPECTED | 
+cls.seq_relationship.weight                | UNEXPECTED | 
+cls.predictions.transform.dense.bias       | UNEXPECTED | 
+cls.predictions.bias                       | UNEXPECTED | 
+classifier.weight                          | MISSING    | 
+classifier.bias                            | MISSING    | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+[transformers] warmup_ratio is deprecated and will be removed in v5.2. Use `warmup_steps` instead.
+  0%|          | 0/240 [00:00<?, ?it/s]  0%|          | 1/240 [00:09<37:40,  9.46s/it]  1%|          | 2/240 [00:09<15:48,  3.98s/it]  2%|▏         | 5/240 [00:09<04:33,  1.16s/it]  3%|▎         | 8/240 [00:09<02:18,  1.67it/s]  5%|▍         | 11/240 [00:10<01:23,  2.74it/s]  6%|▌         | 14/240 [00:10<00:54,  4.12it/s]  7%|▋         | 17/240 [00:10<00:38,  5.82it/s]  8%|▊         | 20/240 [00:10<00:28,  7.80it/s]                                                  8%|▊         | 20/240 [00:10<00:28,  7.80it/s] 10%|▉         | 23/240 [00:19<03:52,  1.07s/it] 11%|█         | 26/240 [00:19<02:39,  1.34it/s] 12%|█▏        | 29/240 [00:19<01:51,  1.90it/s] 14%|█▍        | 33/240 [00:19<01:11,  2.90it/s] 15%|█▌        | 36/240 [00:20<00:52,  3.90it/s] 16%|█▋        | 39/240 [00:20<00:38,  5.19it/s]                                                 17%|█▋        | 40/240 [00:20<00:38,  5.19it/s] 18%|█▊        | 42/240 [00:20<00:29,  6.73it/s] 19%|█▉        | 45/240 [00:20<00:22,  8.67it/s] 20%|██        | 48/240 [00:29<03:08,  1.02it/s]
+  0%|          | 0/4 [00:00<?, ?it/s][A                                                
+                                     [A 20%|██        | 48/240 [00:29<03:08,  1.02it/s]
+100%|██████████| 4/4 [00:00<00:00, 76.11it/s][A
+                                             [A
+Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s][A
+Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  2.14it/s][AWriting model shards: 100%|██████████| 1/1 [00:00<00:00,  2.14it/s]
+ 20%|██        | 48/240 [00:39<03:08,  1.02it/s] 20%|██        | 49/240 [00:39<06:48,  2.14s/it] 22%|██▏       | 52/240 [00:39<04:25,  1.41s/it] 23%|██▎       | 55/240 [00:40<02:56,  1.05it/s] 25%|██▍       | 59/240 [00:40<01:48,  1.67it/s]                                                 25%|██▌       | 60/240 [00:40<01:47,  1.67it/s] 26%|██▌       | 62/240 [00:40<01:17,  2.31it/s] 27%|██▋       | 65/240 [00:40<00:55,  3.16it/s] 28%|██▊       | 68/240 [00:49<03:12,  1.12s/it] 29%|██▉       | 70/240 [00:49<02:31,  1.12it/s] 30%|███       | 73/240 [00:49<01:42,  1.62it/s] 32%|███▏      | 77/240 [00:49<01:04,  2.53it/s] 33%|███▎      | 80/240 [00:49<00:46,  3.43it/s]                                                 33%|███▎      | 80/240 [00:49<00:46,  3.43it/s] 35%|███▍      | 83/240 [00:50<00:34,  4.61it/s] 36%|███▌      | 86/240 [00:50<00:25,  6.12it/s] 37%|███▋      | 89/240 [00:50<00:19,  7.90it/s] 39%|███▉      | 93/240 [00:50<00:13, 10.72it/s] 39%|███▉      | 94/240 [01:09<00:13, 10.72it/s] 40%|███▉      | 95/240 [01:09<04:53,  2.02s/it] 40%|████      | 96/240 [01:09<04:16,  1.78s/it]
+  0%|          | 0/4 [00:00<?, ?it/s][A                                                
+                                     [A 40%|████      | 96/240 [01:09<04:16,  1.78s/it]
+100%|██████████| 4/4 [00:00<00:00, 84.06it/s][A
+                                             [A
+Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s][A
+Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  4.65it/s][AWriting model shards: 100%|██████████| 1/1 [00:00<00:00,  4.64it/s]
+ 40%|████      | 96/240 [01:19<04:16,  1.78s/it] 40%|████      | 97/240 [01:19<07:21,  3.09s/it]                                                 42%|████▏     | 100/240 [01:19<07:12,  3.09s/it] 42%|████▏     | 101/240 [01:19<03:50,  1.66s/it] 43%|████▎     | 104/240 [01:20<02:31,  1.12s/it] 45%|████▍     | 107/240 [01:20<01:42,  1.30it/s] 46%|████▌     | 110/240 [01:20<01:09,  1.86it/s] 48%|████▊     | 114/240 [01:20<00:43,  2.88it/s] 49%|████▉     | 117/240 [01:29<02:17,  1.12s/it] 50%|████▉     | 119/240 [01:29<01:47,  1.12it/s]                                                  50%|█████     | 120/240 [01:29<01:46,  1.12it/s] 51%|█████▏    | 123/240 [01:29<01:05,  1.77it/s] 53%|█████▎    | 127/240 [01:29<00:42,  2.65it/s] 55%|█████▍    | 131/240 [01:30<00:28,  3.82it/s] 56%|█████▋    | 135/240 [01:30<00:19,  5.32it/s] 57%|█████▊    | 138/240 [01:30<00:15,  6.73it/s]                                                  58%|█████▊    | 140/240 [01:30<00:14,  6.73it/s] 59%|█████▉    | 142/240 [01:30<00:10,  9.06it/s]
+  0%|          | 0/4 [00:00<?, ?it/s][A                                                 
+                                     [A 60%|██████    | 144/240 [01:39<00:10,  9.06it/s]
+100%|██████████| 4/4 [00:00<00:00, 71.78it/s][A
+                                             [A
+Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s][A
+Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  4.73it/s][AWriting model shards: 100%|██████████| 1/1 [00:00<00:00,  4.72it/s]
+ 60%|██████    | 144/240 [01:49<00:10,  9.06it/s] 60%|██████    | 145/240 [01:49<02:45,  1.74s/it] 61%|██████    | 146/240 [01:49<02:26,  1.56s/it] 62%|██████▏   | 149/240 [01:49<01:37,  1.07s/it] 63%|██████▎   | 152/240 [01:49<01:05,  1.34it/s] 65%|██████▍   | 155/240 [01:49<00:44,  1.89it/s] 66%|██████▋   | 159/240 [01:50<00:27,  2.90it/s]                                                  67%|██████▋   | 160/240 [01:50<00:27,  2.90it/s] 68%|██████▊   | 162/240 [01:50<00:20,  3.89it/s] 69%|██████▉   | 165/240 [01:50<00:14,  5.19it/s] 70%|███████   | 168/240 [01:50<00:10,  6.81it/s] 71%|███████▏  | 171/240 [01:50<00:07,  8.77it/s] 72%|███████▎  | 174/240 [01:59<01:04,  1.02it/s] 74%|███████▍  | 177/240 [01:59<00:44,  1.42it/s]                                                  75%|███████▌  | 180/240 [01:59<00:42,  1.42it/s] 75%|███████▌  | 181/240 [01:59<00:27,  2.17it/s] 77%|███████▋  | 185/240 [02:00<00:17,  3.18it/s] 79%|███████▉  | 189/240 [02:00<00:11,  4.50it/s] 80%|████████  | 192/240 [02:00<00:08,  5.70it/s]
+  0%|          | 0/4 [00:00<?, ?it/s][A                                                 
+                                     [A 80%|████████  | 192/240 [02:00<00:08,  5.70it/s]
+100%|██████████| 4/4 [00:00<00:00, 85.04it/s][A
+                                             [A
+Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s][A
+Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  4.49it/s][AWriting model shards: 100%|██████████| 1/1 [00:00<00:00,  4.48it/s]
+ 81%|████████▏ | 195/240 [02:10<00:45,  1.00s/it] 82%|████████▎ | 198/240 [02:10<00:30,  1.36it/s]                                                  83%|████████▎ | 200/240 [02:10<00:29,  1.36it/s] 84%|████████▍ | 201/240 [02:10<00:20,  1.87it/s] 85%|████████▌ | 204/240 [02:10<00:14,  2.56it/s] 86%|████████▋ | 207/240 [02:10<00:09,  3.50it/s] 88%|████████▊ | 211/240 [02:10<00:05,  5.11it/s] 89%|████████▉ | 214/240 [02:19<00:25,  1.02it/s] 90%|█████████ | 217/240 [02:19<00:16,  1.40it/s]                                                  92%|█████████▏| 220/240 [02:19<00:14,  1.40it/s] 92%|█████████▏| 221/240 [02:19<00:09,  2.10it/s] 93%|█████████▎| 224/240 [02:20<00:05,  2.82it/s] 95%|█████████▍| 227/240 [02:20<00:03,  3.76it/s] 96%|█████████▋| 231/240 [02:20<00:01,  5.42it/s] 98%|█████████▊| 234/240 [02:20<00:00,  6.92it/s] 99%|█████████▉| 238/240 [02:20<00:00,  9.37it/s]                                                 100%|██████████| 240/240 [02:29<00:00,  9.37it/s]
+  0%|          | 0/4 [00:00<?, ?it/s][A                                                 
+                                     [A100%|██████████| 240/240 [02:29<00:00,  9.37it/s]
+100%|██████████| 4/4 [00:00<00:00, 86.38it/s][A
+                                             [A
+Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s][A
+Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  5.06it/s][AWriting model shards: 100%|██████████| 1/1 [00:00<00:00,  5.06it/s]
+                                                 100%|██████████| 240/240 [02:30<00:00,  9.37it/s]100%|██████████| 240/240 [02:39<00:00,  9.37it/s][transformers] There were missing keys in the checkpoint model loaded: ['bert.embeddings.LayerNorm.weight', 'bert.embeddings.LayerNorm.bias', 'bert.encoder.layer.0.attention.output.LayerNorm.weight', 'bert.encoder.layer.0.attention.output.LayerNorm.bias', 'bert.encoder.layer.0.output.LayerNorm.weight', 'bert.encoder.layer.0.output.LayerNorm.bias', 'bert.encoder.layer.1.attention.output.LayerNorm.weight', 'bert.encoder.layer.1.attention.output.LayerNorm.bias', 'bert.encoder.layer.1.output.LayerNorm.weight', 'bert.encoder.layer.1.output.LayerNorm.bias', 'bert.encoder.layer.2.attention.output.LayerNorm.weight', 'bert.encoder.layer.2.attention.output.LayerNorm.bias', 'bert.encoder.layer.2.output.LayerNorm.weight', 'bert.encoder.layer.2.output.LayerNorm.bias', 'bert.encoder.layer.3.attention.output.LayerNorm.weight', 'bert.encoder.layer.3.attention.output.LayerNorm.bias', 'bert.encoder.layer.3.output.LayerNorm.weight', 'bert.encoder.layer.3.output.LayerNorm.bias', 'bert.encoder.layer.4.attention.output.LayerNorm.weight', 'bert.encoder.layer.4.attention.output.LayerNorm.bias', 'bert.encoder.layer.4.output.LayerNorm.weight', 'bert.encoder.layer.4.output.LayerNorm.bias', 'bert.encoder.layer.5.attention.output.LayerNorm.weight', 'bert.encoder.layer.5.attention.output.LayerNorm.bias', 'bert.encoder.layer.5.output.LayerNorm.weight', 'bert.encoder.layer.5.output.LayerNorm.bias', 'bert.encoder.layer.6.attention.output.LayerNorm.weight', 'bert.encoder.layer.6.attention.output.LayerNorm.bias', 'bert.encoder.layer.6.output.LayerNorm.weight', 'bert.encoder.layer.6.output.LayerNorm.bias', 'bert.encoder.layer.7.attention.output.LayerNorm.weight', 'bert.encoder.layer.7.attention.output.LayerNorm.bias', 'bert.encoder.layer.7.output.LayerNorm.weight', 'bert.encoder.layer.7.output.LayerNorm.bias', 'bert.encoder.layer.8.attention.output.LayerNorm.weight', 'bert.encoder.layer.8.attention.output.LayerNorm.bias', 'bert.encoder.layer.8.output.LayerNorm.weight', 'bert.encoder.layer.8.output.LayerNorm.bias', 'bert.encoder.layer.9.attention.output.LayerNorm.weight', 'bert.encoder.layer.9.attention.output.LayerNorm.bias', 'bert.encoder.layer.9.output.LayerNorm.weight', 'bert.encoder.layer.9.output.LayerNorm.bias', 'bert.encoder.layer.10.attention.output.LayerNorm.weight', 'bert.encoder.layer.10.attention.output.LayerNorm.bias', 'bert.encoder.layer.10.output.LayerNorm.weight', 'bert.encoder.layer.10.output.LayerNorm.bias', 'bert.encoder.layer.11.attention.output.LayerNorm.weight', 'bert.encoder.layer.11.attention.output.LayerNorm.bias', 'bert.encoder.layer.11.output.LayerNorm.weight', 'bert.encoder.layer.11.output.LayerNorm.bias'].
+[transformers] There were unexpected keys in the checkpoint model loaded: ['bert.embeddings.LayerNorm.beta', 'bert.embeddings.LayerNorm.gamma', 'bert.encoder.layer.0.attention.output.LayerNorm.beta', 'bert.encoder.layer.0.attention.output.LayerNorm.gamma', 'bert.encoder.layer.0.output.LayerNorm.beta', 'bert.encoder.layer.0.output.LayerNorm.gamma', 'bert.encoder.layer.1.attention.output.LayerNorm.beta', 'bert.encoder.layer.1.attention.output.LayerNorm.gamma', 'bert.encoder.layer.1.output.LayerNorm.beta', 'bert.encoder.layer.1.output.LayerNorm.gamma', 'bert.encoder.layer.2.attention.output.LayerNorm.beta', 'bert.encoder.layer.2.attention.output.LayerNorm.gamma', 'bert.encoder.layer.2.output.LayerNorm.beta', 'bert.encoder.layer.2.output.LayerNorm.gamma', 'bert.encoder.layer.3.attention.output.LayerNorm.beta', 'bert.encoder.layer.3.attention.output.LayerNorm.gamma', 'bert.encoder.layer.3.output.LayerNorm.beta', 'bert.encoder.layer.3.output.LayerNorm.gamma', 'bert.encoder.layer.4.attention.output.LayerNorm.beta', 'bert.encoder.layer.4.attention.output.LayerNorm.gamma', 'bert.encoder.layer.4.output.LayerNorm.beta', 'bert.encoder.layer.4.output.LayerNorm.gamma', 'bert.encoder.layer.5.attention.output.LayerNorm.beta', 'bert.encoder.layer.5.attention.output.LayerNorm.gamma', 'bert.encoder.layer.5.output.LayerNorm.beta', 'bert.encoder.layer.5.output.LayerNorm.gamma', 'bert.encoder.layer.6.attention.output.LayerNorm.beta', 'bert.encoder.layer.6.attention.output.LayerNorm.gamma', 'bert.encoder.layer.6.output.LayerNorm.beta', 'bert.encoder.layer.6.output.LayerNorm.gamma', 'bert.encoder.layer.7.attention.output.LayerNorm.beta', 'bert.encoder.layer.7.attention.output.LayerNorm.gamma', 'bert.encoder.layer.7.output.LayerNorm.beta', 'bert.encoder.layer.7.output.LayerNorm.gamma', 'bert.encoder.layer.8.attention.output.LayerNorm.beta', 'bert.encoder.layer.8.attention.output.LayerNorm.gamma', 'bert.encoder.layer.8.output.LayerNorm.beta', 'bert.encoder.layer.8.output.LayerNorm.gamma', 'bert.encoder.layer.9.attention.output.LayerNorm.beta', 'bert.encoder.layer.9.attention.output.LayerNorm.gamma', 'bert.encoder.layer.9.output.LayerNorm.beta', 'bert.encoder.layer.9.output.LayerNorm.gamma', 'bert.encoder.layer.10.attention.output.LayerNorm.beta', 'bert.encoder.layer.10.attention.output.LayerNorm.gamma', 'bert.encoder.layer.10.output.LayerNorm.beta', 'bert.encoder.layer.10.output.LayerNorm.gamma', 'bert.encoder.layer.11.attention.output.LayerNorm.beta', 'bert.encoder.layer.11.attention.output.LayerNorm.gamma', 'bert.encoder.layer.11.output.LayerNorm.beta', 'bert.encoder.layer.11.output.LayerNorm.gamma'].
+100%|██████████| 240/240 [02:39<00:00,  1.50it/s]
+  0%|          | 0/7 [00:00<?, ?it/s]100%|██████████| 7/7 [00:00<00:00, 69.94it/s]100%|██████████| 7/7 [00:00<00:00, 63.40it/s]
+Map:   0%|          | 0/755 [00:00<?, ? examples/s]Map: 100%|██████████| 755/755 [00:00<00:00, 1606.74 examples/s]Map: 100%|██████████| 755/755 [00:00<00:00, 1580.51 examples/s]
+Map:   0%|          | 0/108 [00:00<?, ? examples/s]Map: 100%|██████████| 108/108 [00:00<00:00, 14237.19 examples/s]
+Map:   0%|          | 0/216 [00:00<?, ? examples/s]Map: 100%|██████████| 216/216 [00:03<00:00, 65.15 examples/s]Map: 100%|██████████| 216/216 [00:03<00:00, 56.29 examples/s]
+Loading weights:   0%|          | 0/197 [00:00<?, ?it/s]Loading weights: 100%|██████████| 197/197 [00:00<00:00, 2946.23it/s]
+[transformers] [1mXLMRobertaForSequenceClassification LOAD REPORT[0m from: xlm-roberta-base
+Key                         | Status     | 
+----------------------------+------------+-
+lm_head.dense.weight        | UNEXPECTED | 
+lm_head.layer_norm.bias     | UNEXPECTED | 
+roberta.pooler.dense.weight | UNEXPECTED | 
+roberta.pooler.dense.bias   | UNEXPECTED | 
+lm_head.bias                | UNEXPECTED | 
+lm_head.layer_norm.weight   | UNEXPECTED | 
+lm_head.dense.bias          | UNEXPECTED | 
+classifier.dense.bias       | MISSING    | 
+classifier.dense.weight     | MISSING    | 
+classifier.out_proj.weight  | MISSING    | 
+classifier.out_proj.bias    | MISSING    | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+[transformers] warmup_ratio is deprecated and will be removed in v5.2. Use `warmup_steps` instead.
+  0%|          | 0/240 [00:00<?, ?it/s]  0%|          | 1/240 [00:00<00:57,  4.12it/s]  2%|▏         | 4/240 [00:00<00:18, 12.44it/s]  3%|▎         | 7/240 [00:00<00:13, 17.11it/s]  4%|▍         | 10/240 [00:09<05:10,  1.35s/it]  5%|▌         | 12/240 [00:09<03:42,  1.02it/s]  6%|▋         | 15/240 [00:09<02:18,  1.63it/s]  8%|▊         | 18/240 [00:09<01:31,  2.44it/s]                                                  8%|▊         | 20/240 [00:10<01:30,  2.44it/s]  9%|▉         | 21/240 [00:10<01:02,  3.52it/s] 10%|█         | 24/240 [00:10<00:43,  4.92it/s] 12%|█▏        | 28/240 [00:10<00:29,  7.23it/s] 13%|█▎        | 31/240 [00:10<00:22,  9.22it/s] 14%|█▍        | 34/240 [00:10<00:17, 11.49it/s] 15%|█▌        | 37/240 [00:19<03:15,  1.04it/s] 17%|█▋        | 40/240 [00:19<02:17,  1.45it/s]                                                 17%|█▋        | 40/240 [00:19<02:17,  1.45it/s] 18%|█▊        | 43/240 [00:19<01:37,  2.02it/s] 20%|█▉        | 47/240 [00:20<01:03,  3.04it/s]
+  0%|          | 0/4 [00:00<?, ?it/s][A
+                                     [A                                                
+100%|██████████| 4/4 [00:00<00:00, 68.25it/s][A 20%|██        | 48/240 [00:20<01:03,  3.04it/s]
+                                             [A
+Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s][A
+Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  1.67it/s][AWriting model shards: 100%|██████████| 1/1 [00:00<00:00,  1.67it/s]
+ 21%|██        | 50/240 [00:29<03:40,  1.16s/it] 22%|██▏       | 53/240 [00:30<02:37,  1.19it/s] 23%|██▎       | 56/240 [00:30<01:52,  1.64it/s] 25%|██▌       | 60/240 [00:30<01:12,  2.47it/s]                                                 25%|██▌       | 60/240 [00:30<01:12,  2.47it/s] 26%|██▋       | 63/240 [00:30<00:53,  3.31it/s] 28%|██▊       | 66/240 [00:30<00:39,  4.40it/s] 29%|██▉       | 69/240 [00:39<02:58,  1.04s/it] 30%|███       | 72/240 [00:39<02:05,  1.33it/s] 31%|███▏      | 75/240 [00:39<01:29,  1.85it/s] 32%|███▎      | 78/240 [00:40<01:03,  2.56it/s]                                                 33%|███▎      | 80/240 [00:40<01:02,  2.56it/s] 34%|███▍      | 81/240 [00:40<00:45,  3.50it/s] 35%|███▌      | 84/240 [00:40<00:32,  4.73it/s] 36%|███▋      | 87/240 [00:40<00:24,  6.32it/s] 38%|███▊      | 90/240 [00:40<00:18,  8.21it/s] 39%|███▉      | 93/240 [00:40<00:14, 10.40it/s] 40%|████      | 96/240 [00:45<01:22,  1.75it/s]
+  0%|          | 0/4 [00:00<?, ?it/s][A
+                                     [A                                                
+100%|██████████| 4/4 [00:00<00:00, 87.07it/s][A 40%|████      | 96/240 [00:45<01:22,  1.75it/s]
+                                             [A
+Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s][A
+Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  3.28it/s][AWriting model shards: 100%|██████████| 1/1 [00:00<00:00,  3.28it/s]
+ 41%|████      | 98/240 [00:48<01:44,  1.36it/s]                                                 42%|████▏     | 100/240 [00:48<01:42,  1.36it/s] 42%|████▎     | 102/240 [00:48<01:03,  2.17it/s] 44%|████▍     | 106/240 [00:48<00:41,  3.22it/s] 46%|████▌     | 110/240 [00:48<00:28,  4.62it/s] 48%|████▊     | 114/240 [00:48<00:19,  6.38it/s] 49%|████▉     | 118/240 [00:48<00:14,  8.53it/s]                                                  50%|█████     | 120/240 [00:49<00:14,  8.53it/s] 51%|█████     | 122/240 [00:49<00:10, 11.00it/s] 52%|█████▎    | 126/240 [00:49<00:08, 13.61it/s] 54%|█████▍    | 130/240 [00:49<00:06, 16.37it/s] 56%|█████▌    | 134/240 [00:49<00:05, 19.07it/s] 57%|█████▊    | 138/240 [00:49<00:04, 21.49it/s]                                                  58%|█████▊    | 140/240 [00:49<00:04, 21.49it/s] 59%|█████▉    | 141/240 [00:49<00:04, 22.82it/s] 60%|██████    | 144/240 [00:49<00:04, 23.08it/s]
+  0%|          | 0/4 [00:00<?, ?it/s][A
+                                     [A                                                 
+100%|██████████| 4/4 [00:00<00:00, 81.31it/s][A 60%|██████    | 144/240 [00:49<00:04, 23.08it/s]
+                                             [A
+Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s][A
+Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  3.25it/s][AWriting model shards: 100%|██████████| 1/1 [00:00<00:00,  3.24it/s]
+ 61%|██████▏   | 147/240 [00:51<00:15,  6.07it/s] 62%|██████▎   | 150/240 [00:51<00:11,  7.76it/s] 64%|██████▍   | 154/240 [00:51<00:08, 10.39it/s] 65%|██████▌   | 157/240 [00:51<00:06, 12.61it/s]                                                  67%|██████▋   | 160/240 [00:51<00:06, 12.61it/s] 67%|██████▋   | 161/240 [00:51<00:05, 15.42it/s] 68%|██████▊   | 164/240 [00:51<00:04, 17.70it/s] 70%|███████   | 168/240 [00:52<00:03, 20.60it/s] 72%|███████▏  | 172/240 [00:52<00:02, 23.06it/s] 73%|███████▎  | 176/240 [00:52<00:02, 25.06it/s] 75%|███████▌  | 180/240 [00:52<00:02, 26.49it/s]                                                  75%|███████▌  | 180/240 [00:52<00:02, 26.49it/s] 77%|███████▋  | 184/240 [00:52<00:02, 27.51it/s] 78%|███████▊  | 188/240 [00:52<00:01, 28.35it/s] 80%|████████  | 192/240 [00:52<00:01, 28.23it/s]
+  0%|          | 0/4 [00:00<?, ?it/s][A
+                                     [A                                                 
+100%|██████████| 4/4 [00:00<00:00, 104.63it/s][A 80%|████████  | 192/240 [00:52<00:01, 28.23it/s]
+                                              [A
+Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s][A
+Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  3.34it/s][AWriting model shards: 100%|██████████| 1/1 [00:00<00:00,  3.34it/s]
+ 81%|████████▏ | 195/240 [00:54<00:06,  6.83it/s] 83%|████████▎ | 199/240 [00:54<00:04,  9.06it/s]                                                  83%|████████▎ | 200/240 [00:54<00:04,  9.06it/s] 84%|████████▍ | 202/240 [00:54<00:03, 11.01it/s] 86%|████████▌ | 206/240 [00:54<00:02, 13.92it/s] 88%|████████▊ | 210/240 [00:54<00:01, 16.79it/s] 89%|████████▉ | 214/240 [00:54<00:01, 19.48it/s] 91%|█████████ | 218/240 [00:55<00:01, 21.60it/s]                                                  92%|█████████▏| 220/240 [00:55<00:00, 21.60it/s] 92%|█████████▎| 222/240 [00:55<00:00, 23.67it/s] 94%|█████████▍| 226/240 [00:55<00:00, 25.36it/s] 96%|█████████▌| 230/240 [00:55<00:00, 26.66it/s] 98%|█████████▊| 234/240 [00:55<00:00, 27.70it/s] 99%|█████████▉| 238/240 [00:55<00:00, 28.53it/s]                                                 100%|██████████| 240/240 [00:55<00:00, 28.53it/s]
+  0%|          | 0/4 [00:00<?, ?it/s][A
+                                     [A                                                 
+100%|██████████| 4/4 [00:00<00:00, 101.97it/s][A100%|██████████| 240/240 [00:55<00:00, 28.53it/s]
+                                              [A
+Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s][A
+Writing model shards: 100%|██████████| 1/1 [00:00<00:00,  3.40it/s][AWriting model shards: 100%|██████████| 1/1 [00:00<00:00,  3.40it/s]
+                                                 100%|██████████| 240/240 [00:57<00:00, 28.53it/s]100%|██████████| 240/240 [00:57<00:00,  4.18it/s]
+  0%|          | 0/7 [00:00<?, ?it/s]100%|██████████| 7/7 [00:00<00:00, 80.70it/s]

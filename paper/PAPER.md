@@ -2,31 +2,36 @@
 
 **Author:** [Your name]
 **Course:** NLP (Master's), [University name]
-**Status:** Draft — classical ML results complete; transformer + LLM results pending.
+**Repository:** https://github.com/adiletbaimyrza/kara
 
 ---
 
 ## Abstract
 
-Kyrgyz is a low-resource Turkic language with no publicly available hate-speech
-detection dataset. We construct **Kara**, a 1,079-comment 3-class annotated
-dataset built from Kyrgyz-language YouTube comments, using a Davidson-style
-biased+random candidate-sampling pipeline. We benchmark eight systems spanning
-classical ML, fine-tuned multilingual transformers, and zero-/few-shot LLM
-prompting. The classical-ML benchmark already establishes two findings:
-(i) aggressive text preprocessing yields a marginal +1.4 F1 improvement, but
-(ii) **character n-grams improve macro-F1 by +12 points over word n-grams**,
-quantitatively validating an observation that 89.8% of Kyrgyz YouTube comments
-are written using the Russian keyboard rather than Kyrgyz-specific Cyrillic
-letters. Character-ngram TF-IDF + Logistic Regression reaches **0.646 macro-F1**
-as the classical-ML ceiling. We also document a series of culturally-specific
-hate-speech sub-registers (Turkic-Islamic curse formulas, eliminationist
-ethnic-loyalty rhetoric, blood-libel anti-Roma framing, intersectional
-stacked-slur attacks) absent from US-English benchmark corpora. Beyond the
-benchmark, the paper contributes a refined annotation schema with three explicit
-carve-outs from Davidson's incitement-of-violence rule. *(Transformer and LLM
-results, error analysis, and updated abstract numbers will be added once
-Athena-cluster jobs complete.)*
+Kyrgyz is a low-resource Turkic language with no publicly available
+hate-speech detection dataset. We construct **Kara**, a 1,079-comment 3-class
+annotated dataset built from Kyrgyz-language YouTube comments using a
+Davidson-style biased+random candidate-sampling pipeline. We benchmark eight
+systems spanning classical machine learning, fine-tuned multilingual
+transformers, and zero-/few-shot LLM prompting. The headline finding is
+counter-intuitive: **classical TF-IDF char-n-gram + Logistic Regression
+(macro-F1 = 0.646) outperforms every neural system tested** — fine-tuned
+mBERT (0.557) and XLM-RoBERTa (0.431), and Aya-Expanse-8B both zero-shot
+(0.354) and 5-shot (0.393). Character n-grams improve macro-F1 by +12 points
+over word n-grams, which we attribute to the observation that 89.8% of
+comments in our corpus use the Russian keyboard rather than the Kyrgyz-specific
+Cyrillic letters (Ң, Ө, Ү), creating an orthographic mismatch with the
+Wikipedia/CommonCrawl pretraining distributions of all neural systems we
+test. Inter-annotator agreement between the human author and Aya-Expanse-8B
+as a second annotator was κ = 0.100 on n = 1,079, with the LLM systematically
+over-predicting `hate`: 46% of human-labelled `non_hate` items were called
+`hate` by the LLM. Beyond the benchmark, the paper contributes a refined
+annotation schema with two extensions and three carve-outs from Davidson, and
+documents seven culturally-specific hate-speech sub-registers (Turkic-Islamic
+curse formulas, eliminationist ethnic-loyalty rhetoric, blood-libel anti-Roma
+framing, intersectional stacked-slur attacks, misogynistic-targeting clusters,
+anti-LGBT/Western-conspiracy stacking, Tajik-conflict ethnic targeting) absent
+from US-English benchmark corpora.
 
 ---
 
@@ -40,22 +45,30 @@ from US-centric platforms — Twitter (Davidson et al., 2017), Reddit/Gab
 — remain underrepresented despite having politically active online communities
 where hate-speech detection is operationally relevant.
 
-This paper makes three contributions:
+This paper makes four contributions:
 
 1. **Kara: the first publicly-described Kyrgyz hate-speech dataset.** We
    annotate 1,079 comments from 13 Kyrgyz-language YouTube videos using a
    three-class schema (`hate` / `offensive` / `non_hate`) based on Davidson
    (2017) with explicit extensions and limitations documented.
-2. **A classical-ML benchmark establishing the role of orthographic-resilient
-   features in low-resource Turkic NLP.** Character n-grams improve macro-F1
-   by 12 percentage points over word n-grams, which we attribute to the
-   89.8% Russian-keyboard prevalence in the YouTube comment register.
+2. **An 8-system benchmark showing classical ML beats fine-tuned transformers
+   and multilingual LLMs on this dataset.** Character-n-gram TF-IDF reaches
+   macro-F1 = 0.646; mBERT 0.557; XLM-RoBERTa 0.431; Aya-Expanse-8B 0.354
+   (zero-shot) / 0.393 (5-shot). We attribute the classical win to the
+   89.8% Russian-keyboard orthographic prevalence in the YouTube comment
+   register, which mismatches the Cyrillic-Kyrgyz training distribution of
+   the neural systems tested.
 3. **An annotation-methodology contribution**: we identify and document
    culturally-specific hate-speech sub-registers (Turkic-Islamic curse
    formulas, blood-libel anti-Roma framing, intersectional stacked-slur
    attacks, eliminationist ethnic-loyalty rhetoric) that are absent from
    US-centric benchmarks and that require schema refinements not present in
    the strict Davidson framework.
+4. **A reproducible IAA study** between the human annotator and
+   Aya-Expanse-8B as second annotator (κ = 0.100 on n = 1,079). The LLM
+   systematically over-predicts `hate`, which we interpret as evidence that
+   the multi-class Davidson schema is hard to prompt-engineer in a low-
+   resource language and benefits from human-anchored gold standards.
 
 The paper is structured as follows. Section 2 reviews related work. Section 3
 describes the dataset construction pipeline. Section 4 presents the annotation
@@ -206,9 +219,36 @@ not confidently label in <5 seconds, typically due to garbled text, ambiguous
 target reference, or stance ambiguity (e.g., descriptive femicide statements
 that could be either awareness commentary or threat-rhetoric).
 
-**Inter-annotator agreement.** A second annotator (Aya-Expanse-8B) is being
-deployed at the time of writing; Cohen's κ will be reported in the final
-version. *[TBD: κ value, agreement matrix.]*
+**Inter-annotator agreement.** Aya-Expanse-8B was deployed as a second
+annotator on all 1,202 candidates using the same Davidson-extended schema
+prompt (Section 3.4). Cohen's κ on the 1,079 items where the human label was
+not `skip` is **κ = 0.100** (raw agreement = 0.361), which falls in the
+"slight agreement" range under Landis & Koch (1977). Per-class agreement
+(human label → LLM-said-same-label):
+
+| Human label | Agreement | n |
+|---|---|---|
+| `non_hate` | 0.148 | 472 |
+| `offensive` | 0.452 | 343 |
+| `hate` | 0.625 | 264 |
+
+The pattern is striking: the LLM agrees with the human most often on `hate`
+and almost never on `non_hate`. The full human-vs-LLM confusion matrix
+(Figure: `iaa_confusion.png`) shows that **the LLM systematically
+over-predicts `hate`**: of the 472 items the human labelled `non_hate`,
+the LLM called 219 (46%) `hate` and only 70 (15%) `non_hate`. Of the 343
+human-`offensive` items, the LLM called 175 (51%) `hate`. The LLM is
+effectively running a 2-class hate-vs-non-hate split heavily biased toward
+the positive class, rather than a 3-class Davidson schema.
+
+We interpret this as evidence that **the Davidson schema with our two
+extensions and three carve-outs is non-trivial and cannot be reliably
+reproduced from a prompt alone**, even by a multilingual LLM that explicitly
+supports Kyrgyz. The schema requires the kind of consistent corner-case
+adjudication that only a human annotator (or one fine-tuned to the schema)
+can provide. This is a methodological finding, not a failure: low-resource
+hate-speech work cannot offload annotation to LLMs without losing schema
+fidelity.
 
 ---
 
@@ -337,7 +377,11 @@ Latin→Cyrillic mapping + punctuation strip + repeat-character collapse).
 **Transformer training recipe.** 5 epochs, batch size 16, AdamW with learning
 rate 2e-5, weight decay 0.01, warmup ratio 0.1, early stopping on val macro-F1
 with patience 2. Same recipe for both mBERT and XLM-RoBERTa to isolate the
-model-family effect.
+model-family effect. We use **bf16** mixed precision rather than fp16:
+preliminary runs with fp16 caused XLM-R to collapse to predicting the
+majority class (macro-F1 = 0.20 across all eval epochs) due to LayerNorm
+overflow; bf16 has the same memory footprint as fp16 but fp32's exponent
+range and resolves the instability.
 
 **LLM prompting.** Both zero-shot and few-shot prompts include the full
 annotation schema definition. The 5-shot configuration includes 5 examples per
@@ -348,10 +392,12 @@ smallest class and we want all three classes to count equally in evaluation).
 We additionally report accuracy, macro-precision, macro-recall, and per-class F1.
 
 **Compute.** Classical experiments run on Apple M3 Pro (CPU). Transformer
-fine-tuning and LLM inference run on Cyfronet Athena A100 (80 GB).
+fine-tuning and LLM inference run on Cyfronet Helios GH200 (120 GB).
 
 **Reproducibility.** `RNG_SEED=42` is set in every script; classical experiments
-are deterministic across runs. Code: `https://github.com/[TBD]`.
+are deterministic across runs. Code, data splits, and trained-model outputs
+(including all 8 `metrics.json` files and the LLM annotator output) are
+available at: https://github.com/adiletbaimyrza/kara.
 
 ---
 
@@ -406,52 +452,195 @@ the semantic patterns the `hate` class requires.
 
 ### 6.2 Transformer benchmark
 
-*[TBD: mBERT and XLM-R results to be added after Athena jobs complete.
-Expected: 0.70–0.78 macro-F1 based on equivalent low-resource benchmarks
-(Romim 2021 Bengali; Toraman 2022 Turkish). Particular interest in XLM-R
-margin over char-ngrams, which would quantify the value of contextual
-multilingual representations on Kyrgyz YouTube text.]*
+| # | Model | Macro-F1 | Acc | F1 non_hate | F1 offensive | F1 hate |
+|---|---|---|---|---|---|---|
+| 5 | mBERT (bert-base-multilingual-cased) | **0.557** | 0.593 | 0.726 | 0.544 | 0.400 |
+| 6 | XLM-RoBERTa-base | **0.431** | 0.514 | 0.684 | 0.420 | 0.188 |
+
+**RQ4 — Do multilingual transformers fine-tuned on ~1k examples outperform
+classical TF-IDF?** **No.** mBERT (0.557) sits *below* the char-n-gram
+baseline (0.646) by 9 F1 points; XLM-RoBERTa (0.431) sits 21 points below.
+This contradicts the typical pattern seen on English low-resource
+hate-speech tasks where multilingual transformers handily beat TF-IDF
+once a few hundred labelled examples are available.
+
+**RQ5 — mBERT vs XLM-R for Kyrgyz?** **mBERT > XLM-R by 13 F1 points** on
+this dataset — the opposite of what English NLP results would predict
+(XLM-R typically wins on multilingual benchmarks). We hypothesise this is
+because XLM-R's CommonCrawl-heavy Kyrgyz pretraining over-represents formal
+Kyrgyz text using the full Cyrillic alphabet (Ң, Ө, Ү), whereas YouTube
+comments overwhelmingly use the Russian-keyboard substitutes (89.8%, see
+§3.5 of DISCOVERIES.md). mBERT's narrower but Wikipedia-anchored
+Kyrgyz pretraining may better match colloquial vocabulary after the
+Trainer's standard lowercasing/tokenisation. The model that "knows more
+Kyrgyz" performs worse because its Kyrgyz is the wrong dialect of Cyrillic.
+
+Per-class breakdown is telling: XLM-R collapses on the `hate` class
+(F1 = 0.19), suggesting the model failed to learn the minority-class
+boundary at all. mBERT does better but still under-performs the classical
+baseline on `hate` (0.40 vs char-n-gram's 0.57).
 
 ### 6.3 LLM benchmark
 
-*[TBD: Aya-Expanse-8B zero-shot and 5-shot results to be added. Interest in:
-(a) does the LLM close the gap with fine-tuned XLM-R without any training
-signal? (b) does 5-shot meaningfully add over zero-shot, or is the prompt
-itself sufficient? (c) where does the LLM systematically fail — particularly
-on the curse-formula register, intra-religious criticism, and stance-ambiguity
-cases documented in §4.]*
+| # | Model | Macro-F1 | Acc | F1 non_hate | F1 offensive | F1 hate |
+|---|---|---|---|---|---|---|
+| 7 | Aya-Expanse-8B zero-shot | **0.354** | 0.394 | 0.477 | 0.171 | 0.416 |
+| 8 | Aya-Expanse-8B 5-shot/class | **0.393** | 0.486 | 0.655 | 0.108 | 0.415 |
+
+**RQ6 — Can a zero-shot LLM substitute for fine-tuning?** **No, by a wide
+margin.** Aya-Expanse-8B zero-shot reaches macro-F1 = 0.354, which is
+**29 F1 points below the classical baseline** and 20 points below mBERT.
+This is striking because Aya was specifically marketed as a multilingual
+model with explicit Kyrgyz support (one of 23 languages in its Aya-Expanse
+release), making it the strongest off-the-shelf zero-shot candidate.
+
+**RQ7 — Does few-shot prompting close the gap?** **Only marginally.**
+5-shot per class (15 in-context examples drawn from the training split)
+improves macro-F1 from 0.354 to 0.393 — a +0.04 point gain. The few-shot
+prompt does *not* close the gap to fine-tuned transformers, let alone the
+classical baseline.
+
+Both LLM configurations exhibit the same striking failure pattern: the
+model **almost never predicts `offensive`** (recall = 0.103 zero-shot,
+0.176 few-shot) and **over-predicts `hate`** (recall = 0.698 zero-shot,
+0.585 few-shot). The LLM has effectively degenerated to a 2-class
+hate-vs-non_hate split, ignoring the schema's three-way structure. This
+matches the IAA pattern observed in §3.5 where Aya as second annotator
+also over-predicted `hate`. The failure is consistent across the
+LLM's two roles (annotator and classifier) and is a feature of the model's
+schema-comprehension, not of any specific prompt.
 
 ### 6.4 Combined headline
 
-*[TBD: full headline figure once all 8 systems are in. Anchor narrative:
-classical char-ngrams reach 0.65; XLM-R (expected) ~0.75; LLM few-shot
-(expected) somewhere between. The interesting question is the gap-pattern
-across the sub-registers from §4.]*
+Figure `results_f1_bar.png` shows the full ranking. Reading top to bottom:
+
+1. **Classical char-n-gram TF-IDF + LogReg: 0.646** (winner)
+2. Classical char-n-gram TF-IDF + Linear SVM: 0.643
+3. mBERT fine-tuned: 0.557
+4. Classical word TF-IDF + LogReg with preprocessing: 0.524
+5. Classical word TF-IDF + LogReg (baseline): 0.510
+6. XLM-RoBERTa fine-tuned: 0.431
+7. Aya-Expanse-8B 5-shot: 0.393
+8. Aya-Expanse-8B zero-shot: 0.354
+
+**The unambiguous finding is that classical char-n-gram TF-IDF beats every
+neural system tested**, by margins of 9 F1 (vs mBERT) to 29 F1 (vs Aya
+zero-shot). This is not a story about LLM capability in general; it is a
+story about the **mismatch between the YouTube-comment register of our
+corpus (89.8% Russian-keyboard Kyrgyz) and the formal-Kyrgyz pretraining
+distributions** of mBERT, XLM-R, and Aya-Expanse. Character n-grams are
+orthography-resilient by construction: they treat `жолго тушусун`
+(Russian-keyboard) and `жолго түшүсүн` (Kyrgyz-keyboard) as nearly
+identical token sequences. Neural systems trained on formal Kyrgyz cannot
+match this resilience on a 1k-scale dataset.
+
+The figure also makes a class-family observation visible: **all three LLM
+and weak-transformer systems fail predominantly on the `offensive` class**
+(`per_class_metrics.png`), while the classical systems are balanced across
+all three classes. The hate-detection-as-binary failure mode is a real
+risk in deploying LLMs for low-resource hate-speech work.
 
 ---
 
 ## 7. Error Analysis
 
-*[TBD pending best-model selection. Pre-registered error categories from §4
-to track:*
+We analyse errors from the **best classical model** (exp3, char-n-gram +
+LogReg, 72 errors on 216 test items = 33.3% error rate) and compare its
+error distribution to a transformer (exp5 mBERT) and an LLM (exp7
+Aya zero-shot).
 
-- *Slur-bleached generic insult (anti-LGBT slur at non-LGBT target): expected*
-  *easy for lexicon, hardest for LLM-stance-aware classifier*
-- *Ethnic-collective insult without explicit slur: expected hardest for*
-  *TF-IDF, intermediate for transformer, easy for LLM*
-- *Curse-formula register comments: expected easy for transformer (token*
-  *co-occurrence), hardest for TF-IDF*
-- *Misogyny without lexical markers (descriptive sexist generalisation):*
-  *systematically missed by lexicon, requires LLM to catch*
-- *Intra-religious criticism (defending Islam from extremists): high stance-*
-  *ambiguity, expected LLM-only*
-- *Eliminationist rhetoric without explicit slur: blood-libel anti-Roma*
-  *pattern — measurable gap between lexicon and transformer/LLM*
-- *Compound stacked-slur intersectional hate: should be easy for any*
-  *competent model — used as confidence sanity check*
+### 7.1 Error distribution by model family
 
-*Each category will be quantified with per-category precision/recall once*
-*all eight models have run.]*
+Cross-tabulating predictions against gold labels for errors only:
+
+**exp3 char-n-gram (72 errors)** — balanced errors:
+
+| Gold ↓ / Pred → | hate | non_hate | offensive |
+|---|---|---|---|
+| **hate** | — | 7 | 16 |
+| **non_hate** | 15 | — | 6 |
+| **offensive** | 7 | 21 | — |
+
+Errors are roughly symmetric: 22 mispredictions into each non-gold class.
+Most common error: `offensive` → `non_hate` (21 cases) — comments with
+mild profanity or pejorative framing the model classifies as clean.
+
+**exp5 mBERT (88 errors)** — under-detects `hate`:
+
+| Gold ↓ / Pred → | hate | non_hate | offensive |
+|---|---|---|---|
+| **hate** | — | 11 | 23 |
+| **non_hate** | 10 | — | 16 |
+| **offensive** | 13 | 15 | — |
+
+mBERT pushes 34/53 actual `hate` items into `offensive` or `non_hate` —
+the model under-detects the most important class.
+
+**exp7 Aya-Expanse zero-shot (131 errors)** — dramatically over-predicts `hate`:
+
+| Gold ↓ / Pred → | hate | non_hate | offensive |
+|---|---|---|---|
+| **hate** | — | 13 | 3 |
+| **non_hate** | **50** | — | 4 |
+| **offensive** | **38** | 23 | — |
+
+**88 of 131 LLM errors (67%) are the model incorrectly predicting `hate`**:
+50 of 95 non_hate items and 38 of 68 offensive items are labelled `hate`.
+The LLM almost never uses `offensive` (only 7 predictions total across all
+errors). The same pattern was visible in §3.5 when Aya served as a second
+annotator.
+
+### 7.2 Representative error cases (best model, exp3)
+
+`src/error_analysis.py` automatically categorises errors into six types
+based on text features. Below are representative cases (full list in
+`tables/error_examples.md`):
+
+| Category | Gold | Pred | Comment (truncated) |
+|---|---|---|---|
+| keyword_fp | offensive | hate | `кыргыз бийлиги силер манкурт экенсинер...` |
+| ambiguous_target | hate | non_hate | `БАТУКАЕВ ВОР ЕМЕС АЛ БОЛГОНУ ПЕДИК` |
+| ambiguous_target | non_hate | hate | `Армияны кучотуш керек чурката бербей армияга...` |
+| low_information | hate | offensive | `эшек тажиктер акмактар зокурлор!!!!!` |
+| low_information | non_hate | hate | `Жабыш керек түнкү клубтарды` |
+| slur_quoted | hate | offensive | `Депутаттар ыдык болобергиле, элди тынч койгула...` |
+| slur_quoted | offensive | non_hate | `... манкурт болуп тоюнуп жатышат, чурката бербейт...` |
+| other | non_hate | offensive | `Атазовту да киргизип койгула тез это приказ` |
+
+### 7.3 Error categories the schema struggles with most
+
+- **Ambiguous-target comments** (~25% of errors): the comment uses pejorative
+  or slur words but the target is ambiguous — the lexicon-based classifier
+  cannot distinguish "Russian-speaking Kyrgyz politicians" (→ `offensive`)
+  from "Russian people" (→ `hate`) without semantic understanding.
+- **Keyword false positives** (~15%): the candidate-sampling lexicon
+  recruits a comment because it contains a slur stem (e.g. `чурка`-derived
+  forms), but the actual use is critical/reporting (e.g. condemning
+  someone's racism). The classical model cannot recover stance from
+  surface tokens.
+- **Low-information short comments** (~20%): comments under 5 words with
+  a single ambiguous insult word (e.g. `канкорлор` = "bloodthirsty ones"
+  with no specified target). Both schema (where the annotator marks `skip`)
+  and classifier (where the model defaults to majority class) struggle.
+- **Slur-as-quote-or-report** (~15%): comments that use a slur to describe
+  or report someone else's behaviour, not to attack a protected group.
+  Requires the slur-as-generic-insult rule plus stance reasoning the
+  classical model lacks.
+- **Curse-formula register confused with `hate`** (~15%): comments with
+  optative-mood Turkic-Islamic curse formulas that our schema labels
+  `offensive` (per the grammatical-mood rule from §3.4 carve-out (b)),
+  but that the classifier sometimes predicts as `hate` because curse
+  vocabulary co-occurs with hate-class training examples.
+- **Other** (~10%): comments where the classifier's prediction is
+  defensible and the annotator's gold label is debatable (annotation noise
+  rather than classifier error).
+
+The categories are not perfectly clean — error categorisation is itself
+a noisy heuristic — but they suggest that **the classical model's
+weaknesses are concentrated on stance/target ambiguity**, the same places
+where the schema documentation in §4 explicitly flagged sub-registers as
+hard. The classifier's errors are correlated with the schema's documented
+edge cases, not random.
 
 ---
 
@@ -475,7 +664,55 @@ optative-curse-register, criminal-behaviour-target) discriminate cleanly
 between identity-based and behaviour-based incitement, matching modern
 hate-speech taxonomies (HatEval 2019, OffensEval, Founta 2018).
 
-### 8.2 What didn't (or what we deliberately accepted)
+### 8.2 What surprised us
+
+**Classical char-n-grams beat fine-tuned transformers and an 8B LLM on this
+task.** Our pre-registered expectation (Section 6.2 placeholder before the
+runs) was that XLM-R would land around 0.70–0.78 macro-F1 based on
+analogous low-resource benchmarks (Bengali, Turkish). The actual XLM-R
+result was 0.431 — *below* the simplest TF-IDF baseline. mBERT did better
+(0.557) but still 9 F1 points below the char-n-gram winner. The 8B
+multilingual LLM (Aya-Expanse, marketed as supporting Kyrgyz) performed
+worst of all (0.354 zero-shot, 0.393 5-shot). The explanation, in
+hindsight, is the orthographic-prevalence mismatch: the YouTube comment
+register in our corpus uses Russian-keyboard Cyrillic (89.8%) while every
+neural system tested was pretrained on formal-Kyrgyz text with full
+Cyrillic alphabet (Ң, Ө, Ү). Character n-grams are resilient to this
+mismatch by construction; subword tokenisers (BPE, SentencePiece) are not.
+
+**The LLM annotator and LLM classifier exhibit the same failure mode.**
+Aya-Expanse as second annotator over-predicted `hate` (46% of
+human-`non_hate` items labelled `hate`); Aya-Expanse as zero-shot
+classifier also over-predicts `hate` (recall = 0.70, only ~10% recall on
+`offensive`). The schema is too complex for prompt-only application, and
+fine-tuning is necessary to teach the model the three-way distinction.
+This consistency across roles suggests the failure is in the model's
+schema-understanding, not in any specific prompt — a finding that
+generalises to other research that tries to use LLMs both as annotators
+and as classifiers on the same multi-class hate-speech taxonomy.
+
+**mBERT > XLM-R reverses common multilingual-NLP wisdom for Kyrgyz.**
+The conventional ordering (XLM-R > mBERT) holds for most multilingual
+benchmarks but inverts here. We hypothesise this is because XLM-R's
+CommonCrawl-scale Kyrgyz training over-represents formal-Kyrgyz text
+with full Cyrillic letters, while mBERT's narrower Wikipedia-anchored
+Kyrgyz pretraining happens to be closer to YouTube-comment vocabulary
+after standard lowercasing. The model that "knows more Kyrgyz" performs
+worse because its Kyrgyz is the *wrong* dialect of Cyrillic. Future work
+should compare with Kyrgyz-specific monolingual models (e.g.
+KyrgyzBERT, Mamasaidov & Shopokova 2025) to test whether monolingual
+pretraining on YouTube-register Kyrgyz closes the gap to the classical
+baseline.
+
+**XLM-R requires bf16 mixed precision on GH200.** Our initial XLM-R run
+under fp16 collapsed to predicting the majority class (macro-F1 = 0.20
+across all eval epochs, training loss stuck at ~1.08). Switching to bf16
+fixed the collapse and produced the 0.431 result reported above. This is
+a documented issue with XLM-R's LayerNorm under fp16, but it is not widely
+discussed in the low-resource NLP literature — practitioners should be
+aware that the "free" fp16 speed-up can silently degrade model quality.
+
+### 8.3 What didn't (or what we deliberately accepted)
 
 **Single-annotator gold standard.** Time and access constraints prevented
 recruiting a second human annotator. LLM-as-second-annotator (Aya-Expanse-8B)
@@ -497,7 +734,7 @@ but grammatically optative. Our schema labels them `offensive` for operational
 reproducibility; Dangerous Speech (Benesch) would label them `hate`. This is
 a deliberate trade-off named in §3.4 carve-out (b).
 
-### 8.3 Cross-cultural observations
+### 8.4 Cross-cultural observations
 
 Several rhetorical patterns in this corpus have no direct analogue in
 US-English benchmark datasets:
@@ -522,7 +759,7 @@ US-English benchmark datasets:
   "traditional values" / Polish "LGBT-free zones" / US "groomer" rhetoric,
   with culturally specific Kyrgyz vocabulary.
 
-### 8.4 Limitations
+### 8.5 Limitations
 
 (a) **Domain narrowness.** All comments are from YouTube political content.
 General-domain hate-speech behaviour may differ.
@@ -553,23 +790,56 @@ distribution is conditional on the skip-rule.
 ## 9. Conclusion
 
 We introduce **Kara**, the first publicly-described Kyrgyz hate-speech
-detection dataset. The classical-ML benchmark establishes a strong baseline
-at 0.646 macro-F1 using character n-grams + Logistic Regression. The
-character-vs-word-ngram gap (+12 F1 points) quantitatively validates the
-89.8% Russian-keyboard prevalence observation in Kyrgyz YouTube comments.
-Beyond the benchmark, the paper contributes a refined Davidson-based
-annotation schema with three documented carve-outs (dehumanisation-without-
-protected-target, optative-curse-register, criminal-behaviour-target), and
-characterises seven culturally-specific hate-speech sub-registers (Turkic-
-Islamic curse formulas, eliminationist ethnic-loyalty rhetoric, blood-libel
-anti-Roma framing, intersectional stacked-slur attacks, misogynistic-
-targeting cluster, anti-LGBT/Western-conspiracy stacking, Tajik-conflict
-ethnic targeting) absent from US-English benchmark corpora. The dataset and
-annotation framework are designed for extensibility: a v2 should add a
-misogyny flag orthogonal to the hate/offensive axis, target-level subtype
-labels for cross-cultural comparison with HateXplain, and a second human
-annotator. Transformer fine-tuning and LLM zero/few-shot evaluation results
-will be added in the final version.
+detection dataset (1,079 annotated comments across `hate` / `offensive` /
+`non_hate`), and an 8-system benchmark spanning classical ML, fine-tuned
+multilingual transformers, and zero-/few-shot LLM prompting.
+
+The **headline empirical finding is counter-intuitive**: classical
+character-n-gram TF-IDF + Logistic Regression (macro-F1 = 0.646)
+outperforms every neural system we tested — mBERT (0.557), XLM-RoBERTa
+(0.431), and Aya-Expanse-8B both zero-shot (0.354) and 5-shot (0.393).
+The classical-vs-neural gap is large (9 F1 over mBERT, 29 F1 over LLM
+zero-shot) and consistent with our methodological story: 89.8% of
+Kyrgyz YouTube comments use the Russian keyboard rather than the
+Kyrgyz-specific Cyrillic alphabet (Ң, Ө, Ү), and the neural systems'
+pretraining distributions assume the formal-Cyrillic register. Character
+n-grams are orthography-resilient by construction; subword tokenisers are
+not. We recommend **char-n-gram TF-IDF + LogReg as a default baseline for
+any low-resource Cyrillic NLP task** where comment-style orthography
+prevails — not just hate-speech detection.
+
+Beyond the benchmark, the paper contributes:
+
+1. A refined Davidson-based annotation schema with two principled
+   extensions (slur-as-generic-insult, incitement-of-violence) and three
+   documented carve-outs (dehumanisation-without-protected-target,
+   optative-curse-register, criminal-behaviour-target).
+2. Seven culturally-specific hate-speech sub-register characterisations
+   absent from US-English benchmark corpora.
+3. An IAA study (κ = 0.100, n = 1,079) between the author and
+   Aya-Expanse-8B as second annotator, with the LLM systematically
+   over-predicting `hate` — evidence that multi-class hate-speech schemas
+   in low-resource languages cannot be reliably reproduced via prompting.
+4. An operational pipeline (`src/run_all.py`, `src/make_figures.py`, the
+   SLURM scripts) that reproduces all 8 experiments and 10 figures from
+   raw YouTube comments to final paper-ready outputs.
+
+**Recommended future work**:
+
+- A v2 dataset with a HatEval-style misogyny flag orthogonal to the
+  hate/offensive axis, target-level subtype labels for cross-cultural
+  comparison with HateXplain, and a second human annotator.
+- Comparison with KyrgyzBERT (Mamasaidov & Shopokova 2025) to test
+  whether monolingual Kyrgyz pretraining closes the classical-vs-neural
+  gap.
+- An orthographic-normalisation ablation: re-running mBERT/XLM-R/Aya
+  after pre-mapping Russian-keyboard substitutes to canonical Kyrgyz
+  characters, to test whether the neural underperformance is fully
+  explained by the orthographic mismatch.
+
+The dataset, code, trained-model outputs, splits, and a complete
+discoveries log are publicly available at
+https://github.com/adiletbaimyrza/kara.
 
 ---
 

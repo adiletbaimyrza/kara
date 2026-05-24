@@ -1,0 +1,59 @@
+==========================================
+Kara LLM job
+==========================================
+Repo:      /net/scratch/hscra/plgrid/plgadiletbaimyrza/kara
+Venv:      /net/scratch/hscra/plgrid/plgadiletbaimyrza/kara/venv
+HF_HOME:   /net/scratch/hscra/plgrid/plgadiletbaimyrza/hf_home
+GPU:       NVIDIA GH200 120GB
+Start:     2026-05-24 13:03:07
+==========================================
+
+=== [1/4] LLM second-annotator ===
+Pool: 1202 | already done: 1202 | pending: 0
+
+=== [2/4] Build dataset + compute IAA (Cohen's kappa) ===
+Human annotations (excluding skip): 1079
+LLM annotations: 1202
+
+Final dataset:
+  total = 1079
+  train = 755  {'non_hate': 330, 'offensive': 240, 'hate': 185}
+  val   = 108  {'non_hate': 47, 'hate': 26, 'offensive': 35}
+  test  = 216  {'non_hate': 95, 'offensive': 68, 'hate': 53}
+
+IAA (human vs LLM): κ=0.100, raw agreement=0.361, n=1079
+
+=== [3/4] Zero-shot eval ===
+=== exp7_llm_zeroshot ===
+started at: 2026-05-24 13:03:36
+loading CohereForAI/aya-expanse-8b (dtype=bfloat16) ...
+  [25/216]
+  [50/216]
+  [75/216]
+  [100/216]
+  [125/216]
+  [150/216]
+  [175/216]
+  [200/216]
+finished in 272.6s
+macro_f1 = 0.3544
+
+
+=== [4/4] Few-shot eval ===
+=== exp8_llm_fewshot ===
+started at: 2026-05-24 13:08:24
+few-shot examples: 15 (k=5 per class)
+loading CohereForAI/aya-expanse-8b (dtype=bfloat16) ...
+  [25/216]
+  [50/216]
+  [75/216]
+  [100/216]
+  [125/216]
+  [150/216]
+  [175/216]
+  [200/216]
+finished in 365.1s
+macro_f1 = 0.3925
+
+
+Done: 2026-05-24 13:14:32

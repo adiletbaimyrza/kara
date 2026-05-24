@@ -1,0 +1,73 @@
+==========================================
+Kara transformer job
+==========================================
+Repo:      /net/scratch/hscra/plgrid/plgadiletbaimyrza/kara
+GPU:       NVIDIA GH200 120GB
+Start:     2026-05-24 13:15:18
+==========================================
+
+=== [0/1] Ensuring splits exist ===
+Human annotations (excluding skip): 1079
+LLM annotations: 1202
+
+Final dataset:
+  total = 1079
+  train = 755  {'non_hate': 330, 'offensive': 240, 'hate': 185}
+  val   = 108  {'non_hate': 47, 'hate': 26, 'offensive': 35}
+  test  = 216  {'non_hate': 95, 'offensive': 68, 'hate': 53}
+
+IAA (human vs LLM): κ=0.100, raw agreement=0.361, n=1079
+
+=== [1/1] Transformer fine-tuning (mBERT + XLM-R) ===
+=== exp5_mbert ===
+started at: 2026-05-24 13:15:39
+model: bert-base-multilingual-cased
+device available: cuda=True mps=False
+{'loss': '1.106', 'grad_norm': '6.248', 'learning_rate': '1.583e-05', 'epoch': '0.4167'}
+{'loss': '1.096', 'grad_norm': '4.458', 'learning_rate': '1.861e-05', 'epoch': '0.8333'}
+{'eval_loss': '1.024', 'eval_accuracy': '0.4352', 'eval_macro_f1': '0.2035', 'eval_macro_precision': '0.1464', 'eval_macro_recall': '0.3333', 'eval_runtime': '0.1422', 'eval_samples_per_second': '759.4', 'eval_steps_per_second': '28.13', 'epoch': '1'}
+{'loss': '1.05', 'grad_norm': '5.049', 'learning_rate': '1.676e-05', 'epoch': '1.25'}
+{'loss': '0.9936', 'grad_norm': '5.774', 'learning_rate': '1.491e-05', 'epoch': '1.667'}
+{'eval_loss': '0.8959', 'eval_accuracy': '0.5463', 'eval_macro_f1': '0.4644', 'eval_macro_precision': '0.5584', 'eval_macro_recall': '0.5026', 'eval_runtime': '0.1067', 'eval_samples_per_second': '1013', 'eval_steps_per_second': '37.5', 'epoch': '2'}
+{'loss': '0.9363', 'grad_norm': '20.97', 'learning_rate': '1.306e-05', 'epoch': '2.083'}
+{'loss': '0.7779', 'grad_norm': '10.95', 'learning_rate': '1.12e-05', 'epoch': '2.5'}
+{'loss': '0.687', 'grad_norm': '16.19', 'learning_rate': '9.352e-06', 'epoch': '2.917'}
+{'eval_loss': '0.9436', 'eval_accuracy': '0.6019', 'eval_macro_f1': '0.5451', 'eval_macro_precision': '0.625', 'eval_macro_recall': '0.5433', 'eval_runtime': '9.043', 'eval_samples_per_second': '11.94', 'eval_steps_per_second': '0.442', 'epoch': '3'}
+{'loss': '0.6095', 'grad_norm': '10.48', 'learning_rate': '7.5e-06', 'epoch': '3.333'}
+{'loss': '0.5955', 'grad_norm': '9.21', 'learning_rate': '5.648e-06', 'epoch': '3.75'}
+{'eval_loss': '0.8729', 'eval_accuracy': '0.6204', 'eval_macro_f1': '0.6089', 'eval_macro_precision': '0.6144', 'eval_macro_recall': '0.6082', 'eval_runtime': '0.0883', 'eval_samples_per_second': '1223', 'eval_steps_per_second': '45.28', 'epoch': '4'}
+{'loss': '0.4171', 'grad_norm': '12.56', 'learning_rate': '3.796e-06', 'epoch': '4.167'}
+{'loss': '0.468', 'grad_norm': '17.88', 'learning_rate': '1.944e-06', 'epoch': '4.583'}
+{'loss': '0.4522', 'grad_norm': '6.039', 'learning_rate': '9.259e-08', 'epoch': '5'}
+{'eval_loss': '0.9131', 'eval_accuracy': '0.6204', 'eval_macro_f1': '0.6023', 'eval_macro_precision': '0.6105', 'eval_macro_recall': '0.5991', 'eval_runtime': '0.1148', 'eval_samples_per_second': '941', 'eval_steps_per_second': '34.85', 'epoch': '5'}
+{'train_runtime': '150.6', 'train_samples_per_second': '25.07', 'train_steps_per_second': '1.594', 'train_loss': '0.7658', 'epoch': '5'}
+finished in 250.7s
+macro_f1 = 0.5568
+
+=== exp6_xlmr ===
+started at: 2026-05-24 13:19:49
+model: xlm-roberta-base
+device available: cuda=True mps=False
+{'loss': '1.131', 'grad_norm': '3.764', 'learning_rate': '1.583e-05', 'epoch': '0.4167'}
+{'loss': '1.098', 'grad_norm': '3.852', 'learning_rate': '1.861e-05', 'epoch': '0.8333'}
+{'eval_loss': '1.076', 'eval_accuracy': '0.4167', 'eval_macro_f1': '0.2177', 'eval_macro_precision': '0.1993', 'eval_macro_recall': '0.3249', 'eval_runtime': '0.0949', 'eval_samples_per_second': '1138', 'eval_steps_per_second': '42.15', 'epoch': '1'}
+{'loss': '1.086', 'grad_norm': '5.379', 'learning_rate': '1.676e-05', 'epoch': '1.25'}
+{'loss': '1.061', 'grad_norm': '4.592', 'learning_rate': '1.491e-05', 'epoch': '1.667'}
+{'eval_loss': '1.052', 'eval_accuracy': '0.4074', 'eval_macro_f1': '0.2145', 'eval_macro_precision': '0.1975', 'eval_macro_recall': '0.3178', 'eval_runtime': '0.0761', 'eval_samples_per_second': '1420', 'eval_steps_per_second': '52.58', 'epoch': '2'}
+{'loss': '1.077', 'grad_norm': '6.806', 'learning_rate': '1.306e-05', 'epoch': '2.083'}
+{'loss': '1.064', 'grad_norm': '2.721', 'learning_rate': '1.12e-05', 'epoch': '2.5'}
+{'loss': '1.033', 'grad_norm': '10.88', 'learning_rate': '9.352e-06', 'epoch': '2.917'}
+{'eval_loss': '1.066', 'eval_accuracy': '0.4259', 'eval_macro_f1': '0.2807', 'eval_macro_precision': '0.5813', 'eval_macro_recall': '0.3516', 'eval_runtime': '0.0778', 'eval_samples_per_second': '1389', 'eval_steps_per_second': '51.44', 'epoch': '3'}
+{'loss': '1.024', 'grad_norm': '8.625', 'learning_rate': '7.5e-06', 'epoch': '3.333'}
+{'loss': '1.006', 'grad_norm': '13.06', 'learning_rate': '5.648e-06', 'epoch': '3.75'}
+{'eval_loss': '1.018', 'eval_accuracy': '0.4167', 'eval_macro_f1': '0.3885', 'eval_macro_precision': '0.3929', 'eval_macro_recall': '0.3884', 'eval_runtime': '0.0559', 'eval_samples_per_second': '1932', 'eval_steps_per_second': '71.55', 'epoch': '4'}
+{'loss': '1.031', 'grad_norm': '12.7', 'learning_rate': '3.796e-06', 'epoch': '4.167'}
+{'loss': '0.9892', 'grad_norm': '7.736', 'learning_rate': '1.944e-06', 'epoch': '4.583'}
+{'loss': '0.9496', 'grad_norm': '38.13', 'learning_rate': '9.259e-08', 'epoch': '5'}
+{'eval_loss': '0.9974', 'eval_accuracy': '0.5', 'eval_macro_f1': '0.4331', 'eval_macro_precision': '0.4883', 'eval_macro_recall': '0.445', 'eval_runtime': '0.0574', 'eval_samples_per_second': '1883', 'eval_steps_per_second': '69.73', 'epoch': '5'}
+{'train_runtime': '57.22', 'train_samples_per_second': '65.98', 'train_steps_per_second': '4.195', 'train_loss': '1.046', 'epoch': '5'}
+finished in 77.7s
+macro_f1 = 0.4309
+
+
+Done: 2026-05-24 13:21:08

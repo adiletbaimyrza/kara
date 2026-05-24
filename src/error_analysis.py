@@ -92,10 +92,12 @@ def main() -> None:
     plt.close()
 
     # ── table: representative errors (up to 3 per category) ──
-    sampled = (errors.groupby("category", group_keys=False)
-                     .apply(lambda g: g.head(3), include_groups=False)
-                     .reset_index())
-    sampled = sampled.head(12)
+    # NB: include_groups=False drops the `category` column; do the grouping
+    # manually instead so it stays in the output.
+    sampled_parts = []
+    for cat, g in errors.groupby("category"):
+        sampled_parts.append(g.head(3))
+    sampled = pd.concat(sampled_parts, ignore_index=True).head(12)
 
     rows = []
     for _, r in sampled.iterrows():

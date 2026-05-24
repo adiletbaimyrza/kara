@@ -26,7 +26,6 @@ Thumbs.db
 *~
 
 # SLURM logs (regenerated per job — Helios writes to logs/ in repo root)
-logs/
 slurm/logs/
 
 # HuggingFace cache (don't commit gigabytes of model weights)

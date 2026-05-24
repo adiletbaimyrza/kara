@@ -1,0 +1,14 @@
+=== exp8_llm_fewshot ===
+started at: 2026-05-24 13:08:24
+few-shot examples: 15 (k=5 per class)
+loading CohereForAI/aya-expanse-8b (dtype=bfloat16) ...
+  [25/216]
+  [50/216]
+  [75/216]
+  [100/216]
+  [125/216]
+  [150/216]
+  [175/216]
+  [200/216]
+finished in 365.1s
+macro_f1 = 0.3925

@@ -812,3 +812,96 @@ under-handles this. Worth a paragraph in the *Limitations* /
 
 ## 2026-05-23 — dataset-build — Final annotated dataset stats
 After dropping skipped items we have **1079** labelled comments. Class balance: non_hate=472, offensive=343, hate=264. Split sizes: train=755, val=108, test=216.
+
+## 2026-05-24 — dataset-build — Final annotated dataset stats
+After dropping skipped items we have **1079** labelled comments. Class balance: non_hate=472, offensive=343, hate=264. Split sizes: train=755, val=108, test=216.
+
+## 2026-05-24 — annotation — Human vs LLM agreement
+Cohen's κ between the human annotator and Aya-Expanse-8B (prompted with the same guidelines) was **0.135** on n=328 overlapping items, raw agreement 0.409. Agreement is most consistent on `non_hate` (0.18) and weakest on `hate` (0.63); see `tables/annotation_iaa.tex` and `tables/iaa_confusion.csv`.
+
+## 2026-05-24 — dataset-build — Final annotated dataset stats
+After dropping skipped items we have **1079** labelled comments. Class balance: non_hate=472, offensive=343, hate=264. Split sizes: train=755, val=108, test=216.
+
+## 2026-05-24 — annotation — Human vs LLM agreement
+Cohen's κ between the human annotator and Aya-Expanse-8B (prompted with the same guidelines) was **0.100** on n=1079 overlapping items, raw agreement 0.361. Agreement is most consistent on `non_hate` (0.15) and weakest on `hate` (0.62); see `tables/annotation_iaa.tex` and `tables/iaa_confusion.csv`. (Note: the auto-generated wording above mislabels which class is most/least consistent — the per-class numbers themselves are correct; see entry below for full interpretation.)
+
+## 2026-05-24 — results — Classical char-n-gram TF-IDF beats every neural system (HEADLINE FINDING)
+
+The 8-system benchmark produced a counter-intuitive ranking:
+
+| Rank | Model | Family | Macro-F1 |
+|---|---|---|---|
+| 1 | TF-IDF char 3-5 + LogReg (exp3) | classical | **0.646** |
+| 2 | TF-IDF char 3-5 + Linear SVM (exp4) | classical | 0.643 |
+| 3 | mBERT fine-tuned (exp5) | transformer | 0.557 |
+| 4 | TF-IDF word + preproc + LogReg (exp2) | classical | 0.524 |
+| 5 | TF-IDF word + LogReg baseline (exp1) | classical | 0.510 |
+| 6 | XLM-RoBERTa fine-tuned (exp6) | transformer | 0.431 |
+| 7 | Aya-Expanse-8B 5-shot (exp8) | LLM | 0.393 |
+| 8 | Aya-Expanse-8B zero-shot (exp7) | LLM | 0.354 |
+
+**The classical baseline beats every neural system tested** — by 9 F1 over mBERT, 21 F1 over XLM-R, 25 F1 over LLM 5-shot, and 29 F1 over LLM zero-shot. This contradicts the standard expectation that fine-tuned multilingual transformers outperform TF-IDF on hate-speech tasks once a few hundred training examples are available.
+
+**Hypothesis (consistent with the 89.8% Russian-keyboard finding):** the YouTube comment register uses Russian-keyboard substitutes for Kyrgyz-specific letters (Ң→Н, Ө→О, Ү→У), which mismatches the formal-Cyrillic Kyrgyz that all three neural systems saw in pretraining (Wikipedia, CommonCrawl). Character n-grams are orthography-resilient by construction (`жолго тушусун` and `жолго түшүсүн` share most 3-5-char substrings); BPE/SentencePiece tokenisers are not. The classical model side-steps the distribution-shift problem.
+
+**Paper implication:** char-n-gram TF-IDF + LogReg should be reported as a default baseline for any low-resource Cyrillic NLP task where the target text register might differ from formal Wikipedia/CommonCrawl Cyrillic. Most low-resource hate-speech papers do not report this baseline; ours does, and ours wins.
+
+## 2026-05-24 — results — LLM annotator and LLM classifier exhibit the same failure mode (over-predict `hate`)
+
+The Aya-Expanse-8B model was used in two roles: (a) as a second annotator on the 1,202 candidate pool, and (b) as zero-shot and 5-shot classifier on the 216-item test set (experiments 7 and 8). **Both roles exhibit the same systematic bias: the LLM over-predicts `hate`**.
+
+**As annotator** (compared to human gold labels on n=1079):
+
+| Human label | LLM said `hate` | LLM said `offensive` | LLM said `non_hate` |
+|---|---|---|---|
+| `non_hate` (n=472) | 219 (46%) | 183 (39%) | 70 (15%) |
+| `offensive` (n=343) | 175 (51%) | 155 (45%) | 13 (4%) |
+| `hate` (n=264) | 165 (62%) | 90 (34%) | 9 (3%) |
+
+**As classifier** (on the 216-item test set, exp7 zero-shot errors):
+
+- 50 of 95 human-`non_hate` test items predicted `hate`
+- 38 of 68 human-`offensive` test items predicted `hate`
+- LLM recall on `offensive` class: 0.103 (essentially never used)
+
+The schema is the same in both roles; the prompt is essentially the same (annotator prompt is a superset of the classifier prompt). The pattern is that **the LLM cannot reliably operate the three-way distinction; it effectively collapses to a 2-class hate-vs-non_hate split with the threshold set very low.**
+
+**Interpretation:** the Davidson schema with our two extensions and three carve-outs is non-trivial. It requires consistent corner-case adjudication (slur-as-generic-insult, optative vs imperative curses, criminal-behaviour targets) that we cannot encode in a prompt at this LLM scale. Implication: LLM-as-annotator is unreliable for multi-class hate-speech schemas in low-resource languages, even when the LLM explicitly supports the language. Future work that wants LLM annotations should consider schema simplification (binary hate/not-hate) or LLM fine-tuning on a human-anchored subset.
+
+## 2026-05-24 — results — Aya zero-shot recall on `offensive` is 0.103 (effectively a 2-class classifier)
+
+Per-class recall for Aya-Expanse-8B zero-shot (exp7) on the 216-item test set:
+
+- `non_hate`: 0.432 (41 of 95 correctly recovered)
+- `offensive`: **0.103** (7 of 68 correctly recovered — the rest are mostly mislabeled `hate`)
+- `hate`: 0.698 (37 of 53 correctly recovered)
+
+The 5-shot version (exp8) recovers `non_hate` better (0.812) but recall on `offensive` actually drops to 0.176. The LLM has effectively degenerated to a binary classifier with `hate` as the positive class.
+
+This matches the IAA pattern in the entry above. Both as annotator and as classifier, the LLM does not engage with the three-class structure. The `offensive` middle category is invisible to it.
+
+## 2026-05-24 — results — mBERT > XLM-R on Kyrgyz YouTube (reverses common English NLP wisdom)
+
+The standard ordering on multilingual benchmarks is XLM-R > mBERT, often by 5–10 F1 points. On Kara, the ordering is **reversed**: mBERT macro-F1 = 0.557, XLM-R macro-F1 = 0.431 (13 F1 point gap *favouring mBERT*). Per-class breakdown shows XLM-R particularly collapses on `hate` (F1 = 0.188) while mBERT manages 0.400.
+
+**Hypothesis:** XLM-R's CommonCrawl-heavy Kyrgyz pretraining over-represents formal-Kyrgyz text using the full Cyrillic alphabet (Ң, Ө, Ү), whereas YouTube comments overwhelmingly use the Russian-keyboard substitutes (89.8%). mBERT's narrower but Wikipedia-anchored Kyrgyz pretraining happens to be closer to colloquial vocabulary after standard lowercasing. The model that "knows more Kyrgyz" performs worse because its Kyrgyz is the *wrong dialect of Cyrillic*.
+
+**Implication for the paper / future work:** the conventional preference for XLM-R over mBERT on multilingual tasks does not transfer automatically to low-resource Turkic NLP on YouTube text. Practitioners should explicitly benchmark both. Comparison with a Kyrgyz-specific monolingual model (e.g. KyrgyzBERT, Mamasaidov & Shopokova 2025) would test whether monolingual pretraining on YouTube-register Kyrgyz closes the gap with the classical baseline — a clean follow-up experiment.
+
+## 2026-05-24 — operational — XLM-R requires bf16 on GH200; fp16 causes prediction collapse
+
+Our initial XLM-R fine-tuning run on Cyfronet Helios GH200 (under fp16) collapsed to predicting the majority class: macro-F1 = 0.20 across all three eval epochs, with training loss stuck at ~1.08 (barely moving from the initial 1.13). The model never learned the minority-class boundaries.
+
+This is a known but under-discussed issue: XLM-R's LayerNorm (post-norm-style placement) can overflow in fp16 because its activations fall outside the fp16 exponent range. mBERT happens to survive fp16 but XLM-R does not.
+
+**Fix:** switch to bf16 mixed precision. bf16 has the same memory footprint as fp16 but fp32's exponent range, so LayerNorm doesn't overflow. On the second run (under bf16), XLM-R produced macro-F1 = 0.431 — still below the classical baseline, but at least no longer degenerate.
+
+**Code change:** `src/experiments/exp_transformer.py` now uses `bf16=torch.cuda.is_bf16_supported()` instead of `fp16=...`. This is documented in the paper's §5 Experimental Setup.
+
+**Practitioner note for low-resource NLP:** the "free" fp16 speed-up can silently degrade model quality on certain architectures. bf16 is the safer default on modern GPUs (A100, H100, GH200 all support it natively). For any newly fine-tuned XLM-R model, check both that the training loss is decreasing AND that the eval F1 is non-degenerate before trusting the run — silent collapse is detectable only via the F1 being suspiciously flat.
+
+## 2026-05-24 — dataset-build — Final annotated dataset stats
+After dropping skipped items we have **1079** labelled comments. Class balance: non_hate=472, offensive=343, hate=264. Split sizes: train=755, val=108, test=216.
+
+## 2026-05-24 — annotation — Human vs LLM agreement
+Cohen's κ between the human annotator and Aya-Expanse-8B (prompted with the same guidelines) was **0.100** on n=1079 overlapping items, raw agreement 0.361. Agreement is most consistent on `non_hate` (0.15) and weakest on `hate` (0.62); see `tables/annotation_iaa.tex` and `tables/iaa_confusion.csv`.

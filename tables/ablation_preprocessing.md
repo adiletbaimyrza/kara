@@ -1,0 +1,6 @@
+| System | Macro-F1 | Δ vs baseline |
+|---|---|---|
+| exp1_tfidf_baseline | 0.510 | +0.000 |
+| exp2_tfidf_preproc | 0.524 | +0.015 |
+| exp3_tfidf_char_ngram | 0.646 | +0.136 |
+| exp4_tfidf_svm | 0.643 | +0.133 |

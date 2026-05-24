@@ -1,0 +1,55 @@
+{
+  "name": "exp8_llm_fewshot",
+  "family": "llm",
+  "description": "Aya-Expanse-8B 5-shot per class (15 examples in-context)",
+  "n_test": 216,
+  "accuracy": 0.4861111111111111,
+  "macro_f1": 0.39254381436743174,
+  "macro_precision": 0.526147527100271,
+  "macro_recall": 0.45184882294526546,
+  "weighted_f1": 0.4237678053406338,
+  "per_class": {
+    "non_hate": {
+      "precision": 0.5703125,
+      "recall": 0.7684210526315789,
+      "f1": 0.6547085201793722,
+      "support": 95
+    },
+    "offensive": {
+      "precision": 0.6666666666666666,
+      "recall": 0.058823529411764705,
+      "f1": 0.10810810810810811,
+      "support": 68
+    },
+    "hate": {
+      "precision": 0.34146341463414637,
+      "recall": 0.5283018867924528,
+      "f1": 0.4148148148148148,
+      "support": 53
+    }
+  },
+  "model_name": "CohereForAI/aya-expanse-8b",
+  "k_per_class": 5,
+  "raw_samples": [
+    "non_hate",
+    "non_hate",
+    "non_hate",
+    "non_hate",
+    "non_hate",
+    "non_hate",
+    "hate",
+    "non_hate",
+    "hate",
+    "non_hate",
+    "hate",
+    "hate",
+    "non_hate",
+    "non_hate",
+    "non_hate",
+    "non_hate",
+    "non_hate",
+    "hate",
+    "non_hate",
+    "hate"
+  ]
+}

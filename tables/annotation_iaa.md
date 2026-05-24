@@ -1,1 +1,8 @@
-_No LLM annotations available._
+| Metric | Value |
+|---|---|
+| # overlap items | 1079 |
+| Raw agreement | 0.361 |
+| Cohen's κ | 0.100 |
+| Agreement on `non_hate` | 0.148 (n=472) |
+| Agreement on `offensive` | 0.452 (n=343) |
+| Agreement on `hate` | 0.625 (n=264) |
