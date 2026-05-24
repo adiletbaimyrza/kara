@@ -1,4 +1,4 @@
-# Kara: A Kyrgyz Hate Speech Detection Dataset and Benchmark
+# Hate Speech Detection in Kyrgyz: A Dataset, Benchmark, and Annotation Schema for a Low-Resource Turkic Language
 
 **Author:** [Your name]
 **Course:** NLP (Master's), [University name]
@@ -1112,3 +1112,55 @@ academic search.
 
 11. Annotator hesitation > 5 seconds?                              → skip
 ```
+
+---
+
+## Appendix B: Expanded Kyrgyz hate-speech / offensive-language lexicon
+
+While annotating the 1,202-item candidate pool, I logged every
+hate-speech and offensive-language token that recurred but was missing
+from the seed lexicon used by `find_hate_candidates.py`. The compiled
+list (~120 tokens across 9 categories) is a standalone research artifact
+in `data/lexicon_expanded.md`. It can be dropped into the seed lexicon
+to recruit a higher-recall candidate pool in v2 of this dataset or in
+any future Kyrgyz hate-speech work.
+
+The expanded lexicon adds the following categories beyond Davidson's
+original five (Russian profanity, Kyrgyz profanity, anti-LGBT, ethnic,
+political):
+
+| New category | Tokens added | Purpose |
+|---|---|---|
+| `violence_imperative` | ~20 phrases — `атыш керек`, `өлтүрүш керек`, `жок кылыш керек`, `ташбаран`, `өлгүлө`, `кырылып кеткиле`, `мойну үзүлсүн`, etc. | Recruits comments triggering the incitement-of-violence rule (Extension 2). |
+| `curse_optative` | ~12 phrases — `наалат`, `каргыш`, `тукум курут болуп`, `омийин`, `жер жутсун`, etc. | Recruits the Turkic-Islamic curse-formula register (carve-out (b)). |
+
+The expanded lexicon also extends the existing categories:
+
+- **`profanity_ru`**: +15 tokens — `сучка`, `пздц`, `хуйбаш`, `хуесос`, `пиздабол`, `сволоч`, `стерва`, `канчык`, `далбойоп`, `заебал`, `опкосун`, `похуй`, `хуйня`, `Энен дурайын`, `оозуна сиктим`.
+- **`profanity_ky`**: +18 tokens — `айван`/`айбан`, `мал`, `чочко`, `шакал`, `канкор`, `мыкачы`, `сасыган`, `арам`, `манка`, `чимкирик`, `ташак`, `былжырак`, `жинди`, `көкмээ`, `жетим`, `катын`, etc.
+- **`lgbt`**: +6 tokens — `пидрлар`, `пидараз`, `пидарас`, `кызтеке`, `гейропа`, `лесбиян`, `транс`.
+- **`ethnic`**: +3 tokens — `лөлү` (Roma), `африст` [?], `мырк`.
+
+Each token is annotated in `data/lexicon_expanded.md` with a
+transliteration / gloss and a category assignment, with uncertain
+glosses explicitly marked `[?]`. The file also includes drop-in Python
+code that extends `find_hate_candidates.KEYWORDS_BY_CATEGORY` with the
+new tokens.
+
+**Caveats** (also stated in the lexicon file):
+
+1. Categories overlap — many tokens function as both gendered slurs
+   and generic profanity depending on usage. The lexicon-membership
+   tag is necessary but not sufficient for `hate` vs `offensive`
+   classification; the schema decision tree above (Appendix A) is
+   what disambiguates.
+2. Tokens preserve the **orthographic variation** observed in the
+   corpus (89.8% Russian-keyboard substitutes for Ң, Ө, Ү). Both
+   forms are attested in YouTube comments and the lexicon includes
+   both where applicable.
+3. The lexicon is documented for **research purposes only**.
+   Inclusion is a methodological contribution to low-resource Kyrgyz
+   NLP, not an endorsement of any term.
+
+This is the **first publicly-documented expanded hate-speech /
+offensive-language lexicon for Kyrgyz** that I am aware of.

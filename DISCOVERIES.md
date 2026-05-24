@@ -905,3 +905,52 @@ After dropping skipped items we have **1079** labelled comments. Class balance: 
 
 ## 2026-05-24 — annotation — Human vs LLM agreement
 Cohen's κ between the human annotator and Aya-Expanse-8B (prompted with the same guidelines) was **0.100** on n=1079 overlapping items, raw agreement 0.361. Agreement is most consistent on `non_hate` (0.15) and weakest on `hate` (0.62); see `tables/annotation_iaa.tex` and `tables/iaa_confusion.csv`.
+
+## 2026-05-24 — lexicon — Compiled an expanded Kyrgyz hate-speech / offensive-language lexicon (~120 tokens)
+
+While annotating the 1,202-item candidate pool, I logged every
+hate-speech and offensive-language token that recurred but was missing
+from the seed lexicon used by `find_hate_candidates.py`. The compiled
+list is committed to `data/lexicon_expanded.md` and referenced as
+Appendix B of the paper.
+
+Categories covered (9 total, including 2 new ones beyond Davidson's
+original 5):
+
+- `profanity_ru` — extended by 15 tokens (`сучка`, `пздц`, `хуйбаш`,
+  `хуесос`, `пиздабол`, `сволоч`, `стерва`, `канчык`, `далбойоп`,
+  `заебал`, `опкосун`, `похуй`, `хуйня`, `Энен дурайын`, etc.)
+- `profanity_ky` — extended by 18 tokens (`айван`/`айбан`, `мал`,
+  `чочко`, `шакал`, `канкор`, `мыкачы`, `сасыган`, `арам`, `манка`,
+  `чимкирик`, `ташак`, `былжырак`, `жинди`, `көкмээ`, `жетим`,
+  `катын`, `тулку`, `желмогуз`)
+- `lgbt` — extended by 6 tokens (`пидрлар`, `пидараз`, `пидарас`,
+  `кызтеке`, `гейропа`, `лесбиян`)
+- `ethnic` — extended by 3 tokens (`лөлү` for Roma, `африст`, `мырк`)
+- **NEW `violence_imperative`** (~20 phrases) — `атыш керек`,
+  `өлтүрүш керек`, `жок кылыш керек`, `ташбаран`, `өлгүлө`,
+  `кырылып кеткиле`, `мойну үзүлсүн`, etc. Recruits comments
+  triggering Extension 2 (incitement → hate).
+- **NEW `curse_optative`** (~12 phrases) — `наалат`, `каргыш`,
+  `тукум курут болуп`, `омийин`, `жер жутсун`. Recruits the
+  Turkic-Islamic curse-formula register.
+
+**Methodological contribution:** this is the first publicly-documented
+expanded hate-speech / offensive-language lexicon for Kyrgyz that I am
+aware of. Drop-in code for extending
+`find_hate_candidates.KEYWORDS_BY_CATEGORY` is provided in the lexicon
+file. Future Kyrgyz hate-speech work can use the expanded lexicon as a
+higher-recall starting point.
+
+**Caveats** (documented in the lexicon file):
+
+- Categories overlap; lexicon membership is necessary but not
+  sufficient for `hate` vs `offensive` classification.
+- Tokens preserve the orthographic variation (89.8% Russian-keyboard).
+- Lexicon is documented for research only — inclusion is methodological,
+  not endorsement.
+
+A small number of tokens are marked `[?]` where the gloss is
+uncertain — these were attested in the corpus but their meaning may be
+regional or context-dependent. Worth flagging for any Kyrgyz native
+speaker reviewing the lexicon in future.
