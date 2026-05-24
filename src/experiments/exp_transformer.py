@@ -122,12 +122,14 @@ class TransformerExperiment(Experiment):
             fp16=torch.cuda.is_available(),
         )
 
+        # `tokenizer=` was renamed to `processing_class=` in transformers >=4.46
+        # and removed entirely in >=4.57. Use the new name unconditionally.
         trainer = Trainer(
             model=model,
             args=args,
             train_dataset=train_ds,
             eval_dataset=val_ds,
-            tokenizer=tokenizer,
+            processing_class=tokenizer,
             data_collator=DataCollatorWithPadding(tokenizer),
             compute_metrics=_compute_metrics_factory(),
             callbacks=[EarlyStoppingCallback(early_stopping_patience=2)],

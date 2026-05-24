@@ -38,13 +38,25 @@ export TRANSFORMERS_CACHE="${HF_HOME}"
 export HF_HUB_CACHE="${HF_HOME}"
 
 # Load HF_TOKEN (and any other secrets) from .env if present.
+# Aya-Expanse-8B is a gated Cohere model — HF_TOKEN is REQUIRED.
+# Steps:
+#   1. Sign in at https://huggingface.co and accept license on the model page:
+#      https://huggingface.co/CohereForAI/aya-expanse-8b
+#   2. Create a token at https://huggingface.co/settings/tokens
+#   3. Add it to $SCRATCH/kara/.env as: HF_TOKEN=hf_xxxxxx
 ENV_FILE="${SCRATCH_ROOT}/.env"
 if [ -f "${ENV_FILE}" ]; then
     set -a; source "${ENV_FILE}"; set +a
 fi
-if [ -n "${HF_TOKEN:-}" ]; then
-    export HUGGINGFACE_HUB_TOKEN="${HF_TOKEN}"
+if [ -z "${HF_TOKEN:-}" ]; then
+    echo "ERROR: HF_TOKEN is not set." >&2
+    echo "Aya-Expanse-8B is a gated model and requires HuggingFace authentication." >&2
+    echo "  1. Accept the license at https://huggingface.co/CohereForAI/aya-expanse-8b" >&2
+    echo "  2. Create a token at https://huggingface.co/settings/tokens" >&2
+    echo "  3. Add it to ${ENV_FILE} as: HF_TOKEN=hf_xxxxxx" >&2
+    exit 1
 fi
+export HUGGINGFACE_HUB_TOKEN="${HF_TOKEN}"
 
 echo "=========================================="
 echo "Kara LLM job"
