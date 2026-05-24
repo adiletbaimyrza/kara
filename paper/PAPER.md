@@ -2,7 +2,7 @@
 
 **Author:** [Your name]
 **Course:** NLP (Master's), [University name]
-**Repository:** https://github.com/adiletbaimyrza/kara
+**Repository:** https://github.com/adiletbaimyrza/kyrgyz-hsd
 
 ---
 
@@ -416,7 +416,7 @@ fine-tuning and LLM inference run on Cyfronet Helios GH200 (120 GB).
 **Reproducibility.** `RNG_SEED=42` is set in every script; classical experiments
 are deterministic across runs. Code, data splits, and trained-model outputs
 (including all 8 `metrics.json` files and the LLM annotator output) are
-available at: https://github.com/adiletbaimyrza/kara.
+available at: https://github.com/adiletbaimyrza/kyrgyz-hsd.
 
 ---
 
@@ -899,7 +899,7 @@ Beyond the benchmark, the paper contributes:
 
 The dataset, code, trained-model outputs, splits, and a complete
 discoveries log are publicly available at
-https://github.com/adiletbaimyrza/kara.
+https://github.com/adiletbaimyrza/kyrgyz-hsd.
 
 ---
 
@@ -1062,7 +1062,7 @@ academic search.
 
 ### Code and data
 
-- **Kara repository:** https://github.com/adiletbaimyrza/kara
+- **Kara repository:** https://github.com/adiletbaimyrza/kyrgyz-hsd
   — source code, annotated dataset (1,079 labelled comments), data
   splits (70/10/20 stratified), all 8 trained-model outputs
   (`results/exp*/`), regenerable figures (`figures/`), regenerable
