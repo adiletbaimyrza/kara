@@ -1,25 +1,4 @@
-"""Build all figures and tables from ``results/`` + ``data/splits/``.
-
-Outputs (PNG + PDF for every figure):
-
-- ``figures/pipeline_flowchart.png``     dataset construction flowchart
-- ``figures/annotation_flowchart.png``   human / LLM / merge / IAA
-- ``figures/class_distribution.png``     per-class counts per split
-- ``figures/text_length_dist.png``       word-count distribution by class
-- ``figures/keyword_category_hits.png``  lexicon hit breakdown
-- ``figures/iaa_confusion.png``          human vs LLM confusion
-- ``figures/results_f1_bar.png``         headline macro-F1 comparison
-- ``figures/confusion_matrices.png``     all-model confusion grid
-- ``figures/per_class_metrics.png``      per-class F1 grouped bars
-- ``figures/training_curves.png``        transformer epoch curves
-
-Plus tables:
-- ``tables/results_main.{tex,md}``
-- ``tables/ablation_preprocessing.{tex,md}``
-- ``tables/llm_vs_finetune.{tex,md}``
-
-Finally invokes ``src.error_analysis`` to add error figures + tables.
-"""
+"""Build all figures and tables from ``results/`` + ``data/splits/``."""
 
 from __future__ import annotations
 
@@ -62,9 +41,7 @@ def _save(fig_name: str) -> None:
     plt.close()
 
 
-# ─────────────────────────────────────────────────────────────────────────────
 # Flowcharts (drawn with matplotlib patches — no graphviz dependency)
-# ─────────────────────────────────────────────────────────────────────────────
 
 def _flowbox(ax, x, y, *args, color="#cee3f6"):
     # Accept either (w, h, text) or (text,) — the latter uses default box size.
@@ -131,9 +108,7 @@ def fig_annotation_flowchart() -> None:
     _save("annotation_flowchart")
 
 
-# ─────────────────────────────────────────────────────────────────────────────
 # Dataset figures
-# ─────────────────────────────────────────────────────────────────────────────
 
 def fig_class_distribution() -> None:
     if not TRAIN.exists():
@@ -201,9 +176,7 @@ def fig_iaa_confusion() -> None:
     _save("iaa_confusion")
 
 
-# ─────────────────────────────────────────────────────────────────────────────
 # Results figures
-# ─────────────────────────────────────────────────────────────────────────────
 
 def _summary() -> pd.DataFrame | None:
     if not SUMMARY.exists():
@@ -302,9 +275,7 @@ def fig_training_curves() -> None:
     _save("training_curves")
 
 
-# ─────────────────────────────────────────────────────────────────────────────
 # Tables
-# ─────────────────────────────────────────────────────────────────────────────
 
 def _write_results_main() -> None:
     df = _summary()
@@ -372,9 +343,7 @@ def _write_llm_vs_finetune() -> None:
     (TABLES / "llm_vs_finetune.md").write_text("\n".join(md))
 
 
-# ─────────────────────────────────────────────────────────────────────────────
 # Main
-# ─────────────────────────────────────────────────────────────────────────────
 
 def main() -> None:
     ensure_dirs()

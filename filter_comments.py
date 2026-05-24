@@ -1,23 +1,4 @@
-"""
-Research-grade filtering pipeline for Kyrgyz YouTube comments.
-
-Pipeline stages (applied in order; per-stage drop counts logged):
-  1. Empty / whitespace-only
-  2. Length: >= 3 words and <= 100 words
-  3. Letter ratio: letters >= 40% of non-whitespace characters
-  4. Cyrillic ratio: >= 60% of letters are Cyrillic
-  5. Excessive character repeats (e.g., "аааааа")
-  6. Token repetition (e.g., "Жакшы Жакшы Жакшы")
-  7. URL / phone / Telegram-WhatsApp link
-  8. Mention spam (>=3 @mentions or >40% of tokens)
-  9. Hashtag spam (>=3 hashtags or >40% of tokens)
- 10. Near-duplicate removal via canonical form
-
-Outputs:
-  data/comments_filtered.csv   — clean dataset, one row per comment
-  data/filter_stats.csv        — drop counts per stage, per video
-  data/comments_rejected.csv   — sample of rejected comments + reason (for QA)
-"""
+"""Research-grade filtering pipeline for Kyrgyz YouTube comments."""
 
 import csv
 import glob

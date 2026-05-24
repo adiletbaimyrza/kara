@@ -1,19 +1,4 @@
-"""
-Keyword-based hate-speech candidate finder.
-
-Methodology follows Davidson et al. (2017), Founta et al. (2018), TurkHSD, and
-the Kazakh hate speech paper: a curated slur/profanity lexicon is used to
-extract a CANDIDATE POOL of comments that are *likely* to contain hate speech.
-Each candidate is later confirmed/rejected by human annotation. The keyword
-filter is intentionally noisy (false positives are expected — that is the point
-of biased sampling).
-
-Reads:  data/comments_filtered.csv
-Writes:
-  data/candidates_hate.csv     — comments matching >=1 keyword (for annotation)
-  data/candidates_random.csv   — random sample from NON-matching comments (baseline)
-  data/keyword_stats.csv       — hit count per keyword and per category
-"""
+"""Keyword-based hate-speech candidate finder."""
 
 import csv
 import os

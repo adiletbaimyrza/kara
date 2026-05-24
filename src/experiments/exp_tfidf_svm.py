@@ -1,8 +1,4 @@
-"""Experiment 4 — TF-IDF char 3-5grams + Linear SVM.
-
-Uses the best feature representation from Exp 3 with a different classifier
-(LinearSVC). Tests whether the LogReg → SVM swap matters on this size of data.
-"""
+"""Experiment 4 — TF-IDF char 3-5grams + Linear SVM."""
 
 from __future__ import annotations
 

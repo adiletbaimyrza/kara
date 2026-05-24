@@ -1,19 +1,4 @@
-"""Terminal annotation tool for the Kyrgyz hate-speech dataset.
-
-Loads ``candidates_hate.csv`` + ``candidates_random.csv``, shuffles them with a
-fixed seed, and asks the user to label each comment with one keystroke. After
-every keystroke we flush to ``data/annotated/annotations_human.csv`` so a
-crash never loses more than one label.
-
-Run:
-    python -m src.annotate_cli                    # start / resume annotation
-    python -m src.annotate_cli --review hate      # cycle through your hate labels
-    python -m src.annotate_cli --stats            # show progress + counts
-
-Keys:
-    h = hate           o = offensive          n = non_hate
-    s = skip           u = undo last           q = quit (saves & exits)
-"""
+"""Terminal annotation tool for the Kyrgyz hate-speech dataset."""
 
 from __future__ import annotations
 

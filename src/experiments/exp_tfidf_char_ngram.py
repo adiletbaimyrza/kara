@@ -1,9 +1,4 @@
-"""Experiment 3 — TF-IDF character n-grams + LogReg.
-
-Kyrgyz is morphologically rich (agglutinative suffixation). Character n-grams
-should partially recover stems across inflected forms, which word n-grams miss
-on a small dataset. RQ2: do char-ngrams help?
-"""
+"""Experiment 3 — TF-IDF character n-grams + LogReg."""
 
 from __future__ import annotations
 

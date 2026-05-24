@@ -1,19 +1,4 @@
-"""Best-model error categorisation.
-
-Loads ``predictions.csv`` of the highest-macro-F1 experiment from
-``results/summary.csv`` and tags each misclassified example with one of:
-
-- ``code_switching``      — both Cyrillic Kyrgyz/Russian and Latin chars
-- ``slur_quoted``         — slur appears with quote marks or after "деп" ("called")
-- ``keyword_fp``          — slur present but prediction is non_hate / gold is non_hate
-- ``low_information``     — fewer than 5 words
-- ``ambiguous_target``    — slur but no clear protected-group target word
-- ``other``               — fallback
-
-Writes:
-- ``tables/error_examples.{tex,md}`` — up to 12 representative errors
-- ``figures/error_categories.png``   — error breakdown bar chart
-"""
+"""Best-model error categorisation."""
 
 from __future__ import annotations
 

@@ -1,9 +1,4 @@
-"""Experiment 2 — TF-IDF + LogReg WITH aggressive preprocessing.
-
-Same model + features as Exp 1, but with the ``full`` preprocessing profile:
-lowercase, NFC, URL/mention/hashtag strip, Latin->Cyrillic mapping, punctuation
-removal, repeat-character collapse. RQ1: does this help?
-"""
+"""Experiment 2 — TF-IDF + LogReg WITH aggressive preprocessing."""
 
 from __future__ import annotations
 

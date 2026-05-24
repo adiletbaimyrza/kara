@@ -1,15 +1,4 @@
-"""Shared text preprocessing for Kyrgyz hate-speech experiments.
-
-Two normalisation profiles:
-
-- ``minimal``: NFC + collapse whitespace. Used by the baseline (Exp 1).
-- ``full``:    minimal + lowercase + Latin->Cyrillic + strip URLs/mentions/
-               hashtags + strip punctuation + collapse char repeats.
-               Used by Exp 2 ("with preprocessing").
-
-Stopword removal is offered but defaults off — Kyrgyz has no canonical stopword
-list and removing tokens like ``эмес`` (negation) can flip meaning.
-"""
+"""Shared text preprocessing for Kyrgyz hate-speech experiments."""
 
 from __future__ import annotations
 

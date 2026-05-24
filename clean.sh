@@ -24,7 +24,6 @@
 
 set -euo pipefail
 
-# ── Flag parsing ──────────────────────────────────────────────────────────────
 DEEP=0
 LLM_LABELS=0
 NUKE=0
@@ -44,7 +43,6 @@ for arg in "$@"; do
     esac
 done
 
-# ── Where are we? ─────────────────────────────────────────────────────────────
 REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "${REPO_DIR}"
 
@@ -54,7 +52,6 @@ if [ -n "${SCRATCH:-}" ] && command -v squeue >/dev/null 2>&1; then
     IS_HELIOS=1
 fi
 
-# ── Build the target list ─────────────────────────────────────────────────────
 declare -a TARGETS=()
 
 # Always: experiment outputs (cheap to regenerate)
@@ -98,7 +95,6 @@ if [ "${NUKE}" -eq 1 ]; then
     fi
 fi
 
-# ── Show the plan ─────────────────────────────────────────────────────────────
 echo "=========================================="
 echo "Project clean — plan"
 echo "=========================================="
@@ -148,7 +144,6 @@ if [ "${IS_HELIOS}" -eq 1 ]; then
 fi
 echo "=========================================="
 
-# ── Confirm ───────────────────────────────────────────────────────────────────
 if [ "${DRY_RUN}" -eq 1 ]; then
     echo "Dry run — nothing was deleted."
     exit 0
@@ -164,7 +159,6 @@ if [ "${ASSUME_YES}" -ne 1 ]; then
     esac
 fi
 
-# ── Cancel project SLURM jobs first (Helios only) ────────────────────────────────
 if [ "${IS_HELIOS}" -eq 1 ]; then
     echo ""
     echo "Cancelling khsd-* SLURM jobs..."
@@ -179,7 +173,6 @@ if [ "${IS_HELIOS}" -eq 1 ]; then
     fi
 fi
 
-# ── Remove targets ────────────────────────────────────────────────────────────
 echo ""
 echo "Removing files..."
 removed=0
@@ -193,7 +186,6 @@ for t in "${TARGETS[@]}"; do
 done
 echo "  ${removed} target(s) removed."
 
-# ── Final word ────────────────────────────────────────────────────────────────
 echo ""
 echo "Done."
 if [ "${IS_HELIOS}" -eq 1 ]; then

@@ -1,8 +1,4 @@
-"""Experiment 7 — Aya-Expanse-8B zero-shot.
-
-Definition-only prompt, no in-context examples. Tests whether a multilingual
-instruction-tuned LLM can do Kyrgyz hate-speech classification out of the box.
-"""
+"""Experiment 7 — Aya-Expanse-8B zero-shot."""
 
 from __future__ import annotations
 

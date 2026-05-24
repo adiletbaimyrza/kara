@@ -1,4 +1,0 @@
-=== exp2_tfidf_preproc ===
-started at: 2026-05-23 22:27:30
-finished in 1.8s
-macro_f1 = 0.5244

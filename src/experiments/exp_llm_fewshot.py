@@ -1,9 +1,4 @@
-"""Experiment 8 — Aya-Expanse-8B few-shot (5-shot per class).
-
-Same model as Exp 7 with k=5 in-context examples sampled from the training
-split (deterministic seed). Tests whether in-context examples close the gap
-to fine-tuned transformers.
-"""
+"""Experiment 8 — Aya-Expanse-8B few-shot (5-shot per class)."""
 
 from __future__ import annotations
 

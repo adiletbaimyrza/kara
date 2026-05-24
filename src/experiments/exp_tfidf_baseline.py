@@ -1,9 +1,4 @@
-"""Experiment 1 — TF-IDF (word 1-2grams) + Logistic Regression. No preprocessing.
-
-This is the project's reference baseline. Text is used essentially as-is (only
-NFC + whitespace collapsed) so later experiments can isolate the effect of
-preprocessing / model / features.
-"""
+"""Experiment 1 — TF-IDF (word 1-2grams) + Logistic Regression. No preprocessing."""
 
 from __future__ import annotations
 

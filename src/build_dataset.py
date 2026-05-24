@@ -1,18 +1,4 @@
-"""Merge human + LLM annotations, compute IAA, write splits.
-
-Gold label = the human label. LLM label is used only for Inter-Annotator
-Agreement (Cohen's κ, % agreement, per-class agreement, and a confusion matrix
-saved as ``figures/iaa_confusion.png``).
-
-After dropping items the human labelled "skip", we produce a stratified
-70/10/20 train/val/test split with a fixed seed and write to
-``data/splits/``.
-
-A summary is appended to ``DISCOVERIES.md``.
-
-Run:
-    python -m src.build_dataset
-"""
+"""Merge human + LLM annotations, compute IAA, write splits."""
 
 from __future__ import annotations
 

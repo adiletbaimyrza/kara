@@ -1,19 +1,4 @@
-"""LLM-as-second-annotator.
-
-Uses **Aya-Expanse-8B** (``CohereForAI/aya-expanse-8b``) — a multilingual
-instruction-tuned LLM that explicitly supports Kyrgyz. We prompt the model with
-the same annotation guidelines a human gets, plus a small number of in-context
-examples, and parse a single-token label per comment.
-
-Reads the union of ``candidates_hate.csv`` + ``candidates_random.csv`` (same
-deterministic shuffle as the human annotator, so the IDs align 1-to-1), runs
-inference, and writes ``data/annotated/annotations_llm.csv``.
-
-Run:
-    python -m src.annotate_llm                      # all candidates
-    python -m src.annotate_llm --limit 50           # smoke test
-    python -m src.annotate_llm --model CohereForAI/aya-expanse-8b
-"""
+"""LLM-as-second-annotator."""
 
 from __future__ import annotations
 

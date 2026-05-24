@@ -1,15 +1,4 @@
-"""Experiments 5 & 6 — fine-tuned multilingual transformers.
-
-Two model configurations:
-- ``exp5_mbert``: ``bert-base-multilingual-cased``
-- ``exp6_xlmr``:  ``xlm-roberta-base``
-
-Both share the same training recipe (HF Trainer, 5 epochs, bs 16, AdamW
-lr 2e-5, eval each epoch on val, best-model selection by macro-F1). Per-epoch
-loss + val-F1 history is saved to ``results/<name>/train_history.json`` for
-the training-curve plot. We use the ``minimal`` preprocessing profile for
-transformers — subword tokenisers handle case/punct internally.
-"""
+"""Experiments 5 & 6 — fine-tuned multilingual transformers."""
 
 from __future__ import annotations
 

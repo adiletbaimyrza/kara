@@ -1,17 +1,4 @@
-"""LLM-as-second-annotator using mlx-lm (Apple Silicon optimised).
-
-Functionally identical to ``src/annotate_llm.py`` (HuggingFace transformers /
-CUDA) but uses Apple's MLX framework with a 4-bit-quantized Aya-Expanse-8B.
-Roughly 5-10x faster on M-series Macs than the transformers/MPS path.
-
-Writes to the same ``data/annotated/annotations_llm.csv`` as the CUDA version
-so downstream steps (`src/build_dataset.py` for IAA) work identically.
-
-Run:
-    python -m src.annotate_llm_mlx                      # all candidates
-    python -m src.annotate_llm_mlx --limit 50           # smoke test
-    python -m src.annotate_llm_mlx --model mlx-community/aya-expanse-8b-4bit
-"""
+"""LLM-as-second-annotator using mlx-lm (Apple Silicon optimised)."""
 
 from __future__ import annotations
 

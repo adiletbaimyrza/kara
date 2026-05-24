@@ -1,4 +1,0 @@
-=== exp3_tfidf_char_ngram ===
-started at: 2026-05-23 22:27:32
-finished in 2.3s
-macro_f1 = 0.6460

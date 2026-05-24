@@ -1,15 +1,4 @@
-"""Driver — runs every experiment listed in ``EXPERIMENTS`` and writes
-``results/summary.csv`` (one row per experiment).
-
-Usage:
-    python -m src.run_all                       # everything
-    python -m src.run_all --only exp1,exp2      # only some
-    python -m src.run_all --skip llm            # everything except LLM
-    python -m src.run_all --force               # overwrite existing results
-
-The driver is idempotent: an experiment whose ``metrics.json`` already exists
-is skipped unless ``--force`` is passed.
-"""
+"""Driver — runs every experiment listed in ``EXPERIMENTS`` and writes"""
 
 from __future__ import annotations
 

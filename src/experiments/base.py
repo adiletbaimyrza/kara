@@ -1,20 +1,4 @@
-"""Common Experiment interface.
-
-Every experiment subclasses :class:`Experiment` and implements ``run``. The
-base class handles:
-
-- loading the train/val/test splits,
-- writing the standard outputs to ``results/<name>/``:
-  - ``metrics.json``   — overall + per-class metrics
-  - ``predictions.csv``— id, text, gold, pred  (+ probabilities when available)
-  - ``confusion_matrix.csv``
-  - ``classification_report.txt``
-  - ``log.txt``        — captured stdout from ``run``
-- appending one row to ``results/summary.csv``.
-
-``Experiment.evaluate(y_true, y_pred, ids, texts, probs=None)`` is the only
-method experiments need to call after producing predictions on the test set.
-"""
+"""Common Experiment interface."""
 
 from __future__ import annotations
 

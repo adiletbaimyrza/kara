@@ -27,7 +27,6 @@ echo "HF cache:         ${HF_HOME}"
 echo "=========================================="
 echo ""
 
-# ── [1/4] Directories (idempotent) ────────────────────────────────────────────
 echo "[1/4] Creating directories..."
 cd "${REPO_DIR}"
 mkdir -p logs
@@ -36,7 +35,6 @@ mkdir -p results figures tables
 echo "  OK"
 echo ""
 
-# ── [2/4] Check .env / HF_TOKEN (optional but recommended) ────────────────────
 echo "[2/4] Checking .env..."
 ENV_FILE="${SCRATCH_ROOT}/.env"
 if [ -f "${ENV_FILE}" ]; then
@@ -54,7 +52,6 @@ else
 fi
 echo ""
 
-# ── [3/4] Venv (submit setup job if not ready) ────────────────────────────────
 echo "[3/4] Checking Python venv..."
 VENV_MARKER="${VENV_DIR}/.khsd_deps_installed"
 SETUP_DEP=""
@@ -69,7 +66,6 @@ else
 fi
 echo ""
 
-# ── [4/4] Submit experiment jobs ──────────────────────────────────────────────
 # Skip-if-done logic:
 #   - LLM job is SKIPPED entirely if annotations_llm.csv has all 1202 entries
 #     AND both exp7/exp8 metrics.json exist. Set KARA_FORCE=1 to override.

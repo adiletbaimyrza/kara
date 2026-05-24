@@ -1,4 +1,0 @@
-=== exp4_tfidf_svm ===
-started at: 2026-05-23 22:27:34
-finished in 0.4s
-macro_f1 = 0.6427
