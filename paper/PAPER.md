@@ -146,6 +146,16 @@ template-style repetition (often nationalist slogans), and post-deduplication
 the corpus contains substantially more linguistic variation than raw
 comment-count would suggest.
 
+A separate orthographic observation: **only 10.2% (1,423 / 13,902) of
+filtered comments contain Kyrgyz-specific Cyrillic letters** (Ң, Ө, Ү);
+the remaining 89.8% are written using the Russian keyboard alone,
+substituting Н, О, У for the missing letters. This is the dominant
+orthographic feature of the YouTube comment register and the
+post-hoc explanation for the classical-vs-neural performance gap we
+observe in §6.
+
+![Dataset construction pipeline: 13 YouTube videos → 15k raw comments → 11-stage filter → 13.9k clean comments → keyword and random candidate sampling → 1,202 annotation pool.](../figures/pipeline_flowchart.png)
+
 ### 3.3 Candidate sampling (Davidson 2017 methodology)
 
 Annotating all 13,902 comments is infeasible for a single annotator. Following
@@ -162,6 +172,8 @@ Davidson et al. (2017) we apply **biased+random candidate sampling**:
   provides genuine `non_hate` content for class balance.
 
 Total annotation candidates: **1,202**.
+
+![Keyword-pool composition by lexicon category. Profanity (Kyrgyz and Russian) dominate; ethnic, anti-LGBT, and political-insult categories provide diverse coverage of likely-hate content.](../figures/keyword_category_hits.png)
 
 ### 3.4 Annotation schema
 
@@ -198,6 +210,8 @@ c) Violent imperatives against criminal-behaviour categories (pedophiles,
    murderers, terrorists, corrupt politicians-framed-as-criminals) stay
    `offensive` when the speech act reads as death-penalty / judicial-execution
    opinion rather than vigilante incitement.
+
+![Annotation pipeline: 1,202 candidates labelled by the author and (independently) by Aya-Expanse-8B; the human label is the gold; Cohen's κ is computed on overlapping items.](../figures/annotation_flowchart.png)
 
 ### 3.5 Final dataset statistics
 
@@ -249,6 +263,11 @@ adjudication that only a human annotator (or one fine-tuned to the schema)
 can provide. This is a methodological finding, not a failure: low-resource
 hate-speech work cannot offload annotation to LLMs without losing schema
 fidelity.
+
+![Human vs LLM annotator confusion matrix (n=1,079). The
+dark-blue band along the LLM-`hate` column reveals the systematic
+over-prediction: 46% of human-`non_hate` and 51% of human-`offensive`
+items are labelled `hate` by Aya-Expanse-8B.](../figures/iaa_confusion.png)
 
 ---
 
@@ -512,7 +531,12 @@ schema-comprehension, not of any specific prompt.
 
 ### 6.4 Combined headline
 
-Figure `results_f1_bar.png` shows the full ranking. Reading top to bottom:
+![Macro-F1 across all 8 systems on the test set (n=216).
+Char-n-gram TF-IDF + LogReg leads at 0.646; Aya zero-shot trails at 0.354.
+Classical (blue) outperforms transformer (orange) outperforms LLM
+(red).](../figures/results_f1_bar.png)
+
+Reading top to bottom:
 
 1. **Classical char-n-gram TF-IDF + LogReg: 0.646** (winner)
 2. Classical char-n-gram TF-IDF + Linear SVM: 0.643
@@ -535,10 +559,24 @@ identical token sequences. Neural systems trained on formal Kyrgyz cannot
 match this resilience on a 1k-scale dataset.
 
 The figure also makes a class-family observation visible: **all three LLM
-and weak-transformer systems fail predominantly on the `offensive` class**
-(`per_class_metrics.png`), while the classical systems are balanced across
-all three classes. The hate-detection-as-binary failure mode is a real
-risk in deploying LLMs for low-resource hate-speech work.
+and weak-transformer systems fail predominantly on the `offensive` class**,
+while the classical systems are balanced across all three classes. The
+hate-detection-as-binary failure mode is a real risk in deploying LLMs for
+low-resource hate-speech work.
+
+![Per-class F1 across all 8 systems. The LLM and XLM-R systems fail
+catastrophically on `offensive` (orange bars at far left); the classical
+systems (right) are the only ones balanced across all three classes.](../figures/per_class_metrics.png)
+
+![Confusion matrices for all 8 systems, sorted by macro-F1. The classical
+systems (top row) cluster correct predictions tightly on the diagonal; the
+LLM systems (bottom right) have a dark off-diagonal band corresponding to
+the over-prediction of `hate`.](../figures/confusion_matrices.png)
+
+![Training curves for mBERT (exp5) and XLM-R (exp6). mBERT converges
+within 3 epochs to val macro-F1 ≈ 0.66; XLM-R stays near 0.33 (majority-
+class baseline) and only weakly learns the minority classes even after
+bf16 stabilisation.](../figures/training_curves.png)
 
 ---
 
@@ -548,6 +586,10 @@ We analyse errors from the **best classical model** (exp3, char-n-gram +
 LogReg, 72 errors on 216 test items = 33.3% error rate) and compare its
 error distribution to a transformer (exp5 mBERT) and an LLM (exp7
 Aya zero-shot).
+
+![Best-model error breakdown by automatic category. Ambiguous-target,
+keyword-FP, and low-information short comments dominate — categories
+the schema documentation in §4 explicitly flagged as hard.](../figures/error_categories.png)
 
 ### 7.1 Error distribution by model family
 
@@ -758,6 +800,17 @@ US-English benchmark datasets:
   loyalty + Western-conspiracy framing — same global pattern as Russian
   "traditional values" / Polish "LGBT-free zones" / US "groomer" rhetoric,
   with culturally specific Kyrgyz vocabulary.
+- **Cursing is a culturally productive register, not a marked style.** A
+  substantial fraction of `offensive`-class comments in our corpus consist
+  primarily of curse-wishes (`наалат`, `жакшылык көрбөй өтсүн`, `тукум курут
+  болуп`, `Аллах жазалайт`, `жер жутсун`) with little or no conventional
+  insult vocabulary. The register layers pre-Islamic Turkic imagery (`жер
+  жутсун` shamanic register), Arabic-origin Islamic curses (`наалат`,
+  `омийин`, `Аллахтын буйругу болсун`), and post-Soviet political vocabulary
+  (`шерменде`, `сатылган`) in the same speech acts. This layered register
+  reflects Kyrgyz cultural history — centuries of Turkic-Islamic identity
+  overlaid with seventy years of Russian/Soviet influence — and is absent
+  from English-language hate-speech corpora.
 
 ### 8.5 Limitations
 
@@ -784,6 +837,13 @@ under-recruited.
 they cluster in garbled text, stance-ambiguity (e.g., femicide observation
 vs femicide threat), and short-context comments. The dataset's class
 distribution is conditional on the skip-rule.
+
+![Class distribution per split. Stratified 70/10/20 preserves the
+24%-32%-44% hate/offensive/non_hate ratio across train/val/test.](../figures/class_distribution.png)
+
+![Word-count distribution per class. `non_hate` skews shorter; `hate` and
+`offensive` are broader and overlap heavily — class is not separable from
+length alone.](../figures/text_length_dist.png)
 
 ---
 
@@ -845,10 +905,170 @@ https://github.com/adiletbaimyrza/kara.
 
 ## References
 
-*[Final reference list to be assembled from SOURCES.md — citation map already
-prepared with 30+ entries across the seven themed groups: Kyrgyz NLP, hate
-speech detection surveys, low-resource hate speech, Turkic/Central Asian
-languages, transformer methods, LLM evaluation, and annotation methodology.]*
+Cited inline in author-year style. URLs point to the open-access source
+where available; classical references (Landis & Koch 1977; Aitmatov 1980;
+Davidson et al. 2017; Benesch 2012) are widely available through standard
+academic search.
+
+### Hate-speech detection — foundational and benchmarks
+
+- **Davidson, T., Warmsley, D., Macy, M., & Weber, I.** (2017).
+  Automated Hate Speech Detection and the Problem of Offensive Language.
+  *ICWSM 2017*.
+  https://arxiv.org/abs/1703.04009
+- **Mathew, B., Saha, P., Yimam, S. M., Biemann, C., Goyal, P., &
+  Mukherjee, A.** (2021). HateXplain: A Benchmark Dataset for
+  Explainable Hate Speech Detection. *AAAI 2021*.
+  https://huggingface.co/datasets/Hate-speech-CNERG/hatexplain
+- **Founta, A.-M., Djouvas, C., Chatzakou, D., et al.** (2018).
+  Large Scale Crowdsourcing and Characterization of Twitter Abusive
+  Behavior. *ICWSM 2018*. https://arxiv.org/abs/1802.00393
+- **Piot, T., et al.** (2024). MetaHate: A Dataset for Unifying Efforts on
+  Hate Speech Detection. https://arxiv.org/html/2401.06526v1
+- **Bourgeade, T., et al.** (2024). HateDay: Insights from a Global Hate
+  Speech Dataset Representative of a Day on Twitter.
+  https://arxiv.org/html/2411.15462v1
+- **A Large-scale Dataset for Hate Speech.**
+  https://arxiv.org/pdf/2103.11528
+- **Hate Speech Dataset Catalogue.** https://hatespeechdata.com/
+
+### Hate-speech detection — surveys
+
+- **A Survey on Automatic Online Hate Speech Detection in Low-Resource
+  Languages.** https://arxiv.org/html/2411.19017
+- **Multilingual Hate Speech Detection and Counterspeech Generation: A
+  Comprehensive Survey.** https://arxiv.org/html/2603.19279v1
+
+### Low-resource hate-speech detection
+
+- **Romim, N., et al.** (2021). Hate Speech Detection in the Bengali
+  Language: A Dataset and Its Baseline Evaluation.
+- **Stefanovitch, N., et al.** (2024). SEAHateCheck: Functional Tests for
+  Detecting Hate Speech in Low-Resource Languages of Southeast Asia.
+  https://arxiv.org/pdf/2603.16070
+- **Singh, K., et al.** (2025). Hate Speech Detection in Low-Resourced
+  Indian Languages: Transformer-based Monolingual and Multilingual Models.
+  https://www.cambridge.org/core/journals/natural-language-processing/article/hate-speech-detection-in-lowresourced-indian-languages
+- **Goldzycher, J., et al.** (2023). Data-Efficient Strategies for
+  Expanding Hate Speech Detection into Under-Resourced Languages.
+  https://arxiv.org/pdf/2210.11359
+- **Data-Efficient Hate Speech Detection via Cross-Lingual Transfer**
+  (EMNLP 2025). https://aclanthology.org/2025.emnlp-main.1507.pdf
+- **Enhancing Social Media Hate Speech Detection in Low-Resource
+  Languages using Transformers and Explainable AI** (Springer 2025).
+  https://link.springer.com/article/10.1007/s13278-025-01497-w
+- **Bangla Hate Speech Classification with Fine-tuned Transformer
+  Models.** https://arxiv.org/pdf/2512.02845
+
+### Kyrgyz and Turkic / Central Asian NLP
+
+- **Alimova, K., et al.** (2024). KyrgyzNLP: Challenges, Progress, and
+  Future. https://arxiv.org/html/2411.05503v1
+- **Mamasaidov, R., & Shopokova, A.** (2025). KyrgyzBERT: A Compact,
+  Efficient Language Model for Kyrgyz NLP.
+  https://arxiv.org/html/2511.20182
+- **Benchmarking Multilabel Topic Classification in the Kyrgyz Language.**
+  https://arxiv.org/pdf/2308.15952
+- **Human-Annotated NER Dataset for the Kyrgyz Language.**
+  https://arxiv.org/html/2509.19109v1
+- **Toraman, C., et al.** (2022). A Turkish Hate Speech Dataset and
+  Detection System. *LREC 2022*.
+  https://aclanthology.org/2022.lrec-1.443/
+- **Yilmaz, A.** (2025). TurkHSD: A Hate Speech Detection Model for
+  Turkish Text Content.
+  https://www.researchgate.net/publication/387920916
+- **Bekmagambetov, B., et al.** (2021). Cyberbullying and Hate Speech
+  Detection on Kazakh-Language Social Networks.
+  https://www.researchgate.net/publication/352848223
+- **Detection of Offensive Content in the Kazakh Language using ML and
+  DL.** https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12453855/
+- **Recent Advancements and Challenges of Turkic Central Asian Language
+  Processing.** https://arxiv.org/pdf/2407.05006
+- **TurkicNLP: Toolkit for 24 Turkic Languages.**
+  https://turkic-nlp.github.io/
+- **awesome-kyrgyz-nlp — curated resource list.**
+  https://github.com/alexeyev/awesome-kyrgyz-nlp
+
+### Transformer & model methods
+
+- **Devlin, J., et al.** (2019). BERT: Pre-training of Deep Bidirectional
+  Transformers for Language Understanding. *NAACL 2019*. (mBERT release)
+  https://arxiv.org/abs/1810.04805
+- **Conneau, A., et al.** (2020). Unsupervised Cross-lingual Representation
+  Learning at Scale. *ACL 2020*. (XLM-RoBERTa)
+  https://arxiv.org/abs/1911.02116
+- **CohereForAI** (2024). Aya-Expanse-8B: A multilingual instruction-tuned
+  language model. https://huggingface.co/CohereForAI/aya-expanse-8b
+- **Fine-Tuning BERT with AdamW for Hate Speech Detection.**
+  https://aclanthology.org/2024.case-1.27.pdf
+- **Multilingual Hate Speech Detection: A Semi-Supervised GAN Approach
+  (mBERT + XLM-RoBERTa).** https://pmc.ncbi.nlm.nih.gov/articles/PMC11049309/
+- **Addressing Challenges in Hate Speech Detection using BERT-based
+  Models: A Review.**
+  https://www.researchgate.net/publication/379000461
+- **Cross-lingual Hate Speech Detection using Transformer Models.**
+  https://arxiv.org/pdf/2111.00981
+
+### LLM evaluation for hate speech
+
+- **Zhang, Y., et al.** (2025). Can Prompting LLMs Unlock Hate Speech
+  Detection across Languages? A Zero-shot and Few-shot Study.
+  https://arxiv.org/abs/2505.06149
+- **Roy, P., et al.** (2025). Rethinking Hate Speech Detection on Social
+  Media: Can LLMs Replace Traditional Models?
+  https://arxiv.org/html/2506.12744v1
+- **Beyond Traditional Classifiers: Evaluating Large Language Models for
+  Robust Hate Speech Detection.** https://www.mdpi.com/2079-3197/13/8/196
+- **LLMs and Finetuning: Benchmarking Cross-domain Performance for Hate
+  Speech Detection.** https://arxiv.org/pdf/2310.18964
+- **Harnessing AI to Combat Online Hate: Challenges and Opportunities
+  of LLMs in Hate Speech Detection.**
+  https://arxiv.org/html/2403.08035v1
+- **A Large Language Model-Based Approach for Multilingual Hate Speech
+  Detection on Social Media.** https://www.mdpi.com/2073-431X/14/7/279
+
+### Annotation methodology and inter-annotator agreement
+
+- **Landis, J. R., & Koch, G. G.** (1977). The Measurement of Observer
+  Agreement for Categorical Data. *Biometrics* 33(1), 159–174.
+- **Dealing with Annotator Disagreement in Hate Speech Classification.**
+  https://arxiv.org/html/2502.08266v2
+- **Annotating for Hate Speech: The MaNeCo Corpus and Input from Critical
+  Discourse Analysis.** https://arxiv.org/pdf/2008.06222
+- **ProvocationProbe: Instigating Hate Speech Dataset from Twitter.**
+  https://arxiv.org/html/2410.19687v1
+- **Factoring Hate Speech: A New Annotation Framework to Study Hate
+  Speech in Social Media.** https://arxiv.org/pdf/2311.03969
+- **Hate Speech Dataset from a White Supremacy Forum (annotation
+  methodology reference).** https://ar5iv.labs.arxiv.org/html/1809.04444
+
+### Cultural and policy references
+
+- **Aitmatov, C.** (1980). *The Day Lasts More Than a Hundred Years*.
+  (Origin of the `манкурт` literary trope used as ethnic-loyalty
+  pejorative in our corpus.)
+- **Benesch, S.** (2012). Dangerous Speech: A Proposal to Prevent Group
+  Violence. *Dangerous Speech Project*.
+  https://dangerousspeech.org/guide/
+- **Council of Europe** (2016). EU Code of Conduct on Countering Illegal
+  Hate Speech Online.
+  https://commission.europa.eu/strategy-and-policy/policies/justice-and-fundamental-rights/combatting-discrimination/racism-and-xenophobia/eu-code-conduct-countering-illegal-hate-speech-online_en
+- **HatEval 2019** (Basile, V., et al.). Multilingual Detection of Hate
+  Speech Against Immigrants and Women in Twitter. *SemEval 2019 Task 5*.
+  https://aclanthology.org/S19-2007/
+- **OffensEval 2019** (Zampieri, M., et al.). SemEval 2019 Task 6:
+  Identifying and Categorizing Offensive Language in Social Media.
+  https://aclanthology.org/S19-2010/
+
+### Code and data
+
+- **Kara repository:** https://github.com/adiletbaimyrza/kara
+  — source code, annotated dataset (1,079 labelled comments), data
+  splits (70/10/20 stratified), all 8 trained-model outputs
+  (`results/exp*/`), regenerable figures (`figures/`), regenerable
+  tables (`tables/`), full run logs (`logs/`), and a complete
+  experiment-log `DISCOVERIES.md` documenting all annotation and
+  methodological decisions made over the course of the project.
 
 ---
 
