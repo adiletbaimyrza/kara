@@ -151,8 +151,24 @@ class Experiment:
     def run(self) -> dict:
         raise NotImplementedError
 
-    def run_logged(self) -> dict:
-        """Run with stdout captured to ``log.txt``. Idempotent w/ skip-existing."""
+    def run_logged(self, force: bool = False) -> dict:
+        """Run with stdout captured to ``log.txt``. Skips if metrics.json exists.
+
+        Set ``force=True`` (or env ``KARA_FORCE=1``) to re-run anyway.
+        """
+        import json
+        import os
+
+        force = force or os.environ.get("KARA_FORCE") == "1"
+        metrics_path = self.outdir / "metrics.json"
+        if metrics_path.exists() and not force:
+            existing = json.loads(metrics_path.read_text())
+            print(f"=== {self.name} ===")
+            print(f"SKIPPED: {metrics_path} already exists "
+                  f"(macro_f1={existing.get('macro_f1', 'n/a'):.4f}). "
+                  f"Set KARA_FORCE=1 to re-run.")
+            return existing
+
         log_path = self.outdir / "log.txt"
         t0 = time.time()
         buf = io.StringIO()
